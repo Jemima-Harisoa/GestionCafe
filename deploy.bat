@@ -6,7 +6,7 @@ set WAR_NAME=GestionCafe.war
 set APP_NAME=GestionCafe
 set PROJECT_DIR=%~dp0
 set TARGET_DIR=%PROJECT_DIR%target
-set TOMCAT_WEBAPPS_DIR="C:\Program Files\Apache Software Foundation\Tomcat 10.0\webapps"
+set TOMCAT_WEBAPPS_DIR="C:\tomcat\apache-tomcat-10.1.28\webapps"
 
 REM === Vérification de l'existence du fichier WAR ===
 IF NOT EXIST "%TARGET_DIR%\%WAR_NAME%" (
