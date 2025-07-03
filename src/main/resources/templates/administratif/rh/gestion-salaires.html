@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CafeManager Pro - Gestion de Café</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/templates/styles.css}">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-left">
+             <div class="product-info">
+                <a th:href="@{/administratif}" data-page="dashboard" class="nav-link">
+                    <i class="fas fa-chart-line"></i>
+                    <img th:src="@{/images/logo/logo.jpg}" alt="Café">
+                </a>
+            </div>
+        </div>
+        <div class="header-right">
+            <h1 class="page-title" id="pageTitle">Gestion de ressources humaines</h1>
+        </div>
+    </header>
+    <main class="content">
+         <!-- Sidebar  -->
+        <div class="sidebar" id="sidebar">    
+            <nav class="sidebar-nav">
+                <ul>
+                    <li class="nav-item active">
+                        <a th:href="@{/administratif/rh/gestion-employes}"  class="nav-link">
+                            <i class="fas fa-chart-line"></i>
+                            <span>Gestion des employes</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a th:href="@{/administratif/rh/gestion-salaires}"  class="nav-link">
+                            <i class="fas fa-boxes"></i>
+                            <span>Gestion des salaires</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a th:href="@{/administratif/rh/gestion-recrutements}"  class="nav-link">
+                            <i class="fas fa-cogs"></i>
+                            <span>Gestion des recrutements</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a th:href="@{/administratif/rh/gestion-conges}"  class="nav-link">
+                            <i class="fas fa-euro-sign"></i>
+                            <span>Gestion des conges et des jours feries</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a th:href="@{/administratif/rh/parametre}"  class="nav-link">
+                            <i class="fas fa-euro-sign"></i>
+                            <span>Parametrages</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+
+        <div class="main-content" id="mainContent">
+            <div class="production-dashboard">
+                <div class="production-main-card">
+                    <div class="card-header">
+                        <h3>Details sur les salaires des employes</h3>
+                    </div>
+                    <div class="production-chart-container">
+                        <div class="production-items-grid">
+
+                            <div th:if="${employes != null and !#lists.isEmpty(employes)}">
+                                <div th:each="employe : ${employes}" class="production-item-card">
+                                    <div class="item-details">
+                                        <h4>Employé : <span th:text="${employe.nom != null ? employe.nom : '-'}">-</span></h4>
+                                        <div class="item-stats">
+                                            <span class="quantity">
+                                                Date Recrutement :
+                                                <span th:text="${employe.dateRecrutement != null ? #dates.format(employe.dateRecrutement, 'dd/MM/yyyy') : '-'}">-</span>
+                                            </span><br>
+                                            <span class="quantity">
+                                                Genre :
+                                                <span th:text="${employe.genre != null ? employe.genre.valeur : '-'}">-</span>
+                                            </span>
+                                        </div>
+                                        <br>
+                                        <a th:href="@{/administratif/rh/salaire/fiche-de-paie(idEmploye=${employe.id})}" class="btn secondary">Voir la fiche de paie</a><br><br>
+                                        <a th:href="@{/administratif/rh/salaire/avance(idEmploye=${employe.id})}" class="btn secondary">Voir les avances</a><br><br>
+                                        <a th:href="@{/administratif/rh/salaire/commission(idEmploye=${employe.id})}" class="btn secondary">Voir les commissions</a><br><br>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div th:if="${employes == null or #lists.isEmpty(employes)}">
+                                <h4>Aucun employé</h4>
+                            </div>
+           
+                        </div>
+                    </div>
+                </div>
+            </div>  
+            <br><br>
+            <div>
+                <h1>Variation de salaire net des employés par mois</h1>
+
+                <div th:if="${variationSalaireNet != null}">
+                    <div th:each="moisEntry : ${variationSalaireNet}">
+                        <h2 th:text="'Mois : ' + ${moisEntry.mois}"></h2>
+
+                        <table border="1" cellpadding="5" cellspacing="0">
+                            <thead>
+                                <tr>
+                                    <th>ID Employé</th>
+                                    <th>Montant (Ar)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr th:each="salaire : ${moisEntry.salaires}">
+                                    <td th:text="${salaire.idEmploye}"></td>
+                                    <td th:text="${#numbers.formatDecimal(salaire.montant, 0, 'COMMA', 2, 'POINT')} + ' Ar'"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <br>
+                    </div>
+                </div>
+
+                <div th:if="${variationSalaireNet == null or #lists.isEmpty(variationSalaireNet)}">
+                    <p>Aucune donnée disponible.</p>
+                </div>
+            </div>
+
+            
+
+            <div>
+                <h1>Variation de commission des employés par mois</h1>
+
+                <div th:if="${variationCommission != null}">
+                    <div th:each="moisEntry : ${variationCommission}">
+                        <h2 th:text="'Mois : ' + ${moisEntry.mois}"></h2>
+
+                        <table border="1" cellpadding="5" cellspacing="0">
+                            <thead>
+                                <tr>
+                                    <th>ID Employé</th>
+                                    <th>Montant (Ar)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr th:each="commission : ${moisEntry.commissions}">
+                                    <td th:text="${commission.idEmploye}"></td>
+                                    <td th:text="${#numbers.formatDecimal(commission.montant, 0, 'COMMA', 2, 'POINT')} + ' Ar'"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <br>
+                    </div>
+                </div>
+
+                <div th:if="${variationCommission == null or #lists.isEmpty(variationCommission)}">
+                    <p>Aucune donnée de commission disponible.</p>
+                </div>
+            </div>
+
+            <div>
+                <h1>Variation des avances des employés par mois</h1>
+
+                <div th:if="${variationAvance != null}">
+                    <div th:each="moisEntry : ${variationAvance}">
+                        <h2 th:text="'Mois : ' + ${moisEntry.mois}"></h2>
+
+                        <table border="1" cellpadding="5" cellspacing="0">
+                            <thead>
+                                <tr>
+                                    <th>ID Employé</th>
+                                    <th>Montant (Ar)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr th:each="avance : ${moisEntry.avances}">
+                                    <td th:text="${avance.idEmploye}"></td>
+                                    <td th:text="${#numbers.formatDecimal(avance.montant, 0, 'COMMA', 2, 'POINT')} + ' Ar'"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <br/>
+                    </div>
+                </div>
+
+                <div th:if="${variationAvance == null or #lists.isEmpty(variationAvance)}">
+                    <p>Aucune donnée d'avance disponible.</p>
+                </div>
+            </div>
+
+
+            <div>
+                <div>
+                    <h1 th:text="${erreurFicheDePaie != null ? erreurFicheDePaie}"></h1>
+                </div>
+                <div>
+                    <h1 th:text="${erreurAvance != null ? erreurAvance}"></h1>
+                </div>
+                <div>
+                    <h1 th:text="${erreurCommission != null ? erreurCommission}"></h1>
+                </div>
+                <div>
+                    <h1 th:text="${erreurAjoutCommission != null ? erreurAjoutCommission}"></h1>
+                </div>
+                <div>
+                    <h1 th:text="${erreurAjoutAvance != null ? erreurAjoutAvance}"></h1>
+                </div>
+                <div>
+                    <h1 th:text="${erreurPayement != null ? erreurPayement}"></h1>
+                </div>
+            </div>
+
+            
+        </div>
+    </main>
+</body>
+</html>
+
+
+                        
+                        

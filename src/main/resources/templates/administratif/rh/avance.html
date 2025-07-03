@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CafeManager Pro - Gestion de Café</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/templates/styles.css}">
+    <link rel="stylesheet" th:href="@{/css/rh/historique.css}">
+    <script th:src="@{/js/rh/avance.js}"></script>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-left">
+             <div class="product-info">
+                <a th:href="@{/administratif}" data-page="dashboard" class="nav-link">
+                    <i class="fas fa-chart-line"></i>
+                    <img th:src="@{/images/logo/logo.jpg}" alt="Café">
+                </a>
+            </div>
+        </div>
+        <div class="header-right">
+            <h1 class="page-title" id="pageTitle">Gestion de ressources humaines</h1>
+        </div>
+    </header>
+    <main class="content">
+        <!-- Sidebar  -->
+        <div class="sidebar" id="sidebar">    
+            <nav class="sidebar-nav">
+                <ul>
+                    <li class="nav-item active">
+                        <a th:href="@{/administratif/rh/gestion-employes}"  class="nav-link">
+                            <i class="fas fa-chart-line"></i>
+                            <span>Gestion des employes</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a th:href="@{/administratif/rh/gestion-salaires}"  class="nav-link">
+                            <i class="fas fa-boxes"></i>
+                            <span>Gestion des salaires</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a th:href="@{/administratif/rh/gestion-recrutements}"  class="nav-link">
+                            <i class="fas fa-cogs"></i>
+                            <span>Gestion des recrutement</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a th:href="@{/administratif/rh/gestion-conges}"  class="nav-link">
+                            <i class="fas fa-euro-sign"></i>
+                            <span>Gestion des conges et des jours feries</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a th:href="@{/administratif/rh/parametre}"  class="nav-link">
+                            <i class="fas fa-euro-sign"></i>
+                            <span>Parametrages</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+        <div class="main-content" id="mainContent">
+
+            <div class="financial-details">
+                <div class="finance-chart-card">
+                    <div class="card-header">
+                        <h3><i class="fas fa-chart-area"></i>Gestion des avances</h3>
+                    </div>
+                    <div class="chart-placeholder">
+                        
+                        <div class="production-items-grid">
+                            <div class="production-item-card">
+                                <div class="item-details">
+                                <h4>Employe : nom</h4>
+                                <div class="customer-avatar">
+                                    <img src="" alt="">
+                                </div>
+                                <div class="item-stats">
+                                    <span class="quantity">Date Recrutement : </span>
+                                    <br>
+                                    <span class="quantity">Genre : </span>
+                                    <br>
+                                    <span class="quantity">Contact : </span>
+                                </div>
+                                <br>
+                                <a th:href="@{/administratif/rh/salaire/avance(idEmploye=${employe.id})}" class="btn secondary">Voir la fiche de l'employe</a><br>
+                            </div>
+                        </div>
+                        <br><br>
+                        <div class="form-showcase">
+                            <h5>Formulaire pour accorder une avance</h5>
+                            Reste du prochain salaire disponible : <span th:text="${prochainSalaire != null ? prochainSalaire : '-'}">-</span>
+                            Retenu pour avance du prochain salaire : <span th:text="${retenuPourAvance != null ? retenuPourAvance : '-'}">-</span>
+                            <form th:action="@{/administratif/rh/salaire/ajout-avance}" method="post" class="form-example">
+                                <div class="form-group">
+                                    <label class="form-label">Montant (Ariary) :</label>
+                                    <input type="number" class="form-input" placeholder="Ex : 50000" name="montant" min="0" step="100" required>
+                                </div>
+                                 <div class="form-group">
+                                    <label class="form-label">Raison :</label>
+                                    <select class="form-select" name="idRaison">
+                                        <option value="" >Choisir une raison </option>
+                                        <option th:each="raisonAvance : ${raisonAvances}" th:value="${raisonAvance.id}">
+                                            <span th:text="${raisonAvance != null ? raisonAvance.valeur : '-'}">-</span>
+                                        </option>
+                                    </select>
+                                </div>
+                                <input type="hidden" name="idEmploye" th:value="${employe.id}">
+                                <button type="submit" class="btn primary">Donner une avance</button>
+                                <br><br>
+                            </form>
+                        </div>
+                        <br><br>
+                    </div>
+                </div>
+                
+                <div class="expense-breakdown-card">
+                    <div class="card-header">
+                        <h3>Historique des avances</h3>
+                    </div>
+                    <div class="table-container" th:if="${avances != null and !#lists.isEmpty(avances)}">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th><i class="fas fa-tag"></i> Date avance</th>
+                                    <th><i class="fas fa-euro-sign"></i> Montant</th>
+                                    <th><i class="fas fa-info-circle"></i> Raison</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr th:each="avance : ${avances}">
+                                    <td><strong><span th:text="${avance.dateAvance != null ? avance.dateAvance : '-'}">-</span></strong></td>
+                                    <td><strong><span th:text="${avance.montant != null ? avance.montant : '-'}">-</span></strong></td>
+                                    <td><span th:text="${avance.raisonAvance != null ? avance.raisonAvance.valeur : '-'}">-</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div th:if="${avances == null or #lists.isEmpty(avances)}">
+                        <h4>Aucunes avances donnees a l'employe</h4>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+</body>
+</html>

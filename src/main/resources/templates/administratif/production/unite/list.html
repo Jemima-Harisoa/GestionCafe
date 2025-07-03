@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unités - Caf-E</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/templates/styles.css}">
+</head>
+<body>
+<div th:replace="~{administratif/production/layout/sidebar :: sidebar}"></div>
+<div class="main-content" id="mainContent">
+    <div th:replace="~{administratif/production/layout/header :: header('Unités')}"></div>
+    <main class="content">
+        <!-- Modern Header -->
+        <div class="page-header modern-header">
+            <div class="header-content">
+                <div class="header-title-section">
+                    <div class="header-icon">
+                        <i class="fas fa-balance-scale"></i>
+                    </div>
+                    <div>
+                        <h2>Gestion des Unités</h2>
+                        <p class="header-subtitle">Catalogue complet des unités de mesure</p>
+                    </div>
+                </div>
+                <div class="header-actions">
+                    <div class="search-filters">
+                        <div class="search-input">
+                            <i class="fas fa-search"></i>
+                            <input type="text" id="searchNom" placeholder="Rechercher une unité...">
+                        </div>
+                        <select class="form-select" id="searchCategorie">
+                            <option value="">Toutes les catégories</option>
+                            <option th:each="cat : ${categories}" th:value="${cat.nom}" th:text="${cat.nom}"></option>
+                        </select>
+                    </div>
+                    <a th:href="@{/administratif/production/unite/new}" class="btn primary">
+                        <i class="fas fa-plus"></i>
+                        Ajouter 
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Stats -->
+        <div class="stats-grid" style="margin-bottom: 2rem;">
+            <div class="stat-card primary hover-lift">
+                <div class="stat-icon">
+                    <i class="fas fa-balance-scale"></i>
+                </div>
+                <div class="stat-info">
+                    <h3>Total Unités</h3>
+                    <p class="stat-value" th:text="${#lists.size(unites)}">0</p>
+                </div>
+            </div>
+
+            <div class="stat-card success hover-lift">
+                <div class="stat-icon">
+                    <i class="fas fa-layer-group"></i>
+                </div>
+                <div class="stat-info">
+                    <h3>Catégories</h3>
+                    <p class="stat-value" th:text="${#lists.size(categories)}">0</p>
+                </div>
+            </div>
+
+            <div class="stat-card info hover-lift">
+                <div class="stat-icon">
+                    <i class="fas fa-ruler"></i>
+                </div>
+                <div class="stat-info">
+                    <h3>Unités de Base</h3>
+                    <p class="stat-value">
+                        <span th:with="baseUnits=${unites.?[valeurParNorme == 1]}" th:text="${#lists.size(baseUnits)}">0</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="stat-card warning hover-lift">
+                <div class="stat-icon">
+                    <i class="fas fa-calculator"></i>
+                </div>
+                <div class="stat-info">
+                    <h3>Conversions</h3>
+                    <p class="stat-value">
+                        <span th:with="conversionUnits=${unites.?[valeurParNorme != 1]}" th:text="${#lists.size(conversionUnits)}">0</span>
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Units Table -->
+        <div class="table-container" th:if="${not #lists.isEmpty(unites)}">
+            <div style="padding: 1.5rem 2rem; border-bottom: 1px solid rgba(139, 69, 19, 0.1); background: rgba(139, 69, 19, 0.05);">
+                <h3 style="margin: 0; display: flex; align-items: center; gap: 0.75rem;">
+                    <i class="fas fa-balance-scale"></i>
+                    Unités de Mesure
+                    <span style="font-size: 0.8rem; background: var(--primary-color); color: white; padding: 0.25rem 0.75rem; border-radius: 12px;"
+                          th:text="${#lists.size(unites)} + ' unités'">0 unités</span>
+                </h3>
+            </div>
+            <table class="data-table">
+                <thead>
+                <tr>
+                    <th><i class="fas fa-hashtag"></i> ID</th>
+                    <th><i class="fas fa-tag"></i> Nom</th>
+                    <th><i class="fas fa-layer-group"></i> Catégorie</th>
+                    <th><i class="fas fa-calculator"></i> Valeur par Norme</th>
+                    <th><i class="fas fa-chart-bar"></i> Type</th>
+                    <th><i class="fas fa-cogs"></i> Actions</th>
+                </tr>
+                </thead>
+                <tbody id="uniteTableBody">
+                <tr th:each="unite : ${unites}">
+                    <td>
+                        <span style="background: var(--primary-light); color: var(--primary-color); padding: 0.25rem 0.5rem; border-radius: 4px; font-weight: bold;"
+                              th:text="${unite.id}">ID</span>
+                    </td>
+                    <td>
+                        <div style="display: flex; align-items: center; gap: 0.75rem;">
+                            <div style="width: 40px; height: 40px; border-radius: 50%; background: var(--gradient-primary); display: flex; align-items: center; justify-content: center; color: white; font-weight: bold;">
+                                <span th:text="${#strings.substring(unite.nom, 0, 1)}">U</span>
+                            </div>
+                            <span style="font-weight: 500;" th:text="${unite.nom}">Nom unité</span>
+                        </div>
+                    </td>
+                    <td>
+                        <span style="background: var(--info-light); color: var(--info-color); padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.85rem;"
+                              th:text="${unite.categorieUnite != null ? unite.categorieUnite.nom : 'Non définie'}">Catégorie</span>
+                    </td>
+                    <td>
+                        <div style="display: flex; align-items: center; gap: 0.5rem;">
+                            <strong style="color: var(--success-color);" th:text="${unite.valeurParNorme}">1</strong>
+                            <span style="font-size: 0.8rem; color: var(--gray-500);" th:text="${unite.categorieUnite != null ? unite.categorieUnite.norme : ''}">norme</span>
+                        </div>
+                    </td>
+                    <td>
+                        <span th:if="${unite.valeurParNorme == 1}" class="status-badge success">
+                            <i class="fas fa-star"></i>
+                            Unité de base
+                        </span>
+                        <span th:unless="${unite.valeurParNorme == 1}" class="status-badge info">
+                            <i class="fas fa-exchange-alt"></i>
+                            Conversion
+                        </span>
+                    </td>
+                    <td>
+                        <div style="display: flex; gap: 0.5rem;">
+                            <a th:href="@{'/administratif/production/unite/edit/' + ${unite.id}}" 
+                               class="btn warning small" title="Modifier">
+                                <i class="fas fa-edit"></i>
+                            </a>
+                            <a th:href="@{'/administratif/production/unite/delete/' + ${unite.id}}" 
+                               class="btn danger small" title="Supprimer"
+                               onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette unité ?')">
+                                <i class="fas fa-trash"></i>
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Empty State -->
+        <div th:if="${#lists.isEmpty(unites)}" class="chart-card hover-glow" style="text-align: center; padding: 4rem 2rem;">
+            <div style="color: var(--gray-400); margin-bottom: 2rem;">
+                <i class="fas fa-balance-scale" style="font-size: 4rem;"></i>
+            </div>
+            <h3 style="color: var(--gray-600); margin-bottom: 1rem;">Aucune unité</h3>
+            <p style="color: var(--gray-500); margin-bottom: 2rem;">Commencez par ajouter vos premières unités de mesure pour gérer vos conversions.</p>
+            <a th:href="@{/administratif/production/unite/new}" class="btn primary">
+                <i class="fas fa-plus"></i>
+                Ajouter la première unité
+            </a>
+        </div>
+    </main>
+</div>
+<script th:src="@{/templates/script.js}"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const searchNom = document.getElementById('searchNom');
+    const searchCategorie = document.getElementById('searchCategorie');
+    const tableBody = document.getElementById('uniteTableBody');
+
+    function normalize(str) {
+        return (str || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+    }
+
+    function filterTable() {
+        const nomVal = normalize(searchNom.value);
+        const categorieVal = normalize(searchCategorie.value);
+        
+        console.log('Recherche:', nomVal, 'Catégorie:', categorieVal);
+
+        Array.from(tableBody.querySelectorAll('tr')).forEach(tr => {
+            // Méthode plus simple : récupérer tout le texte de la cellule du nom
+            const nomCell = tr.querySelector('td:nth-child(2)');
+            const nom = nomCell ? normalize(nomCell.textContent.trim()) : '';
+            
+            // Récupère la catégorie (span dans le 3e td)
+            const categorieSpan = tr.querySelector('td:nth-child(3) span');
+            const categorie = categorieSpan ? normalize(categorieSpan.textContent.trim()) : '';
+
+            console.log('Ligne - Nom trouvé:', nom, 'Catégorie trouvée:', categorie);
+
+            const matchNom = !nomVal || nom.includes(nomVal);
+            const matchCategorie = !categorieVal || categorie.includes(categorieVal);
+
+            console.log('Match nom:', matchNom, 'Match catégorie:', matchCategorie);
+
+            tr.style.display = (matchNom && matchCategorie) ? '' : 'none';
+        });
+    }
+
+    if (searchNom && searchCategorie && tableBody) {
+        searchNom.addEventListener('input', filterTable);
+        searchCategorie.addEventListener('change', filterTable);
+    }
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,53 @@
+<div th:fragment="sidebar">
+    <!-- Bouton flottant pour réafficher le sidebar -->
+    <button class="sidebar-toggle-float" id="sidebarShowBtn" style="display:none; position:fixed; top:20px; left:20px; z-index:2000; background:#fff; border:none; border-radius:50%; box-shadow:0 2px 8px rgba(0,0,0,0.15); width:40px; height:40px; align-items:center; justify-content:center;">
+        <i class="fas fa-bars"></i>
+    </button>
+    <div class="sidebar" id="sidebar">
+
+    <div class="sidebar-header">
+        <a th:href="@{/administratif}" class="logo" style="text-decoration:none; color:inherit; display:flex; align-items:center;">
+            <i class="fas fa-coffee"></i>
+            <span style="margin-left:8px;">Caf-E</span>
+        </a>
+        <button class="sidebar-toggle" id="sidebarToggle">
+            <i class="fas fa-bars"></i>
+        </button>
+    </div>
+
+    <nav class="sidebar-nav">
+        <ul>
+            <li class="nav-item">
+                <a th:href="@{/administratif/production/stats}" class="nav-link">
+                    <i class="fas fa-euro-sign"></i>
+                    <span>Statistiques</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a th:href="@{/produits}" class="nav-link">
+                    <i class="fas fa-chart-line"></i>
+                    <span>Produits</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a th:href="@{/machines}" class="nav-link">
+                    <i class="fas fa-cogs"></i>
+                    <span>Machine</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a th:href="@{/administratif/production/matiere-premiere}" class="nav-link">
+                    <i class="fas fa-boxes"></i>
+                    <span>Matières premières </span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a th:href="@{/administratif/production/unite}" class="nav-link">
+                    <i class="fas fa-balance-scale"></i>
+                    <span>Unités </span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    </div>
+</div>

@@ -1,0 +1,14 @@
+- Database : ProstgreSQL (version 14)
+- Language : Java (Jdk17)
+- Frameworks : 
+    - SpringBoot 3.x
+    - Spring Data JPA (Hibernate)
+- View avec ThymeLeaf
+- Maven
+- Serveur : Tomcat (version 10.1)
+- Extensions vscode:
+    - Java Extension Pack
+    - Spring Boot Extension Pack
+    - Maven for Java
+
+- bootstrap5 : deja dispo dans /resources/static/bootstrap5

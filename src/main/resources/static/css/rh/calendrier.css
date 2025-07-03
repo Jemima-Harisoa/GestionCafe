@@ -1,0 +1,163 @@
+
+label[for="yearSelect"] {
+  font-weight: 600;
+  font-size: 18px;
+  color: #333;
+  margin-right: 10px;
+  user-select: none;
+  font-family: 'Kanit', sans-serif;
+}
+
+#yearSelect {
+  padding: 8px 12px;
+  font-size: 16px;
+  border: 2px solid #924400;
+  border-radius: 8px;
+  background-color: white;
+  color: #333;
+  font-family: 'Kanit', sans-serif;
+  cursor: pointer;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  outline: none;
+  min-width: 120px;
+}
+
+#yearSelect:hover, #yearSelect:focus {
+  border-color: #673500;
+  box-shadow: 0 0 8px rgba(255, 143, 44, 0.5);
+}
+
+.calendar-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  max-width: 100%;
+  box-sizing: border-box;
+  gap: 10px; /* espace entre mois */
+}
+
+/* Pour avoir 4 mois par ligne, chaque mois fait environ 23% */
+.month {
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  background: #fff;
+  margin: 0; /* géré par gap */
+  padding: 10px;
+  width: 23%;  /* 4 mois par ligne */
+  box-sizing: border-box;
+  min-width: 200px; /* limite minimum pour éviter d’être trop petit */
+}
+
+.month h3 {
+  text-align: center;
+  margin: 5px 0;
+  color: #7a3e03cc;
+}
+
+.days-header,
+.days-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  text-align: center;
+  gap: 2px;
+}
+
+.days-header div {
+  font-weight: bold;
+  background: #eee;
+  padding: 5px 0;
+  font-size: 14px;
+}
+
+.empty {
+  background: #f9f9f9;
+  height: 40px;
+}
+
+.day-button {
+  all: unset;
+  display: block;
+  width: 100%;
+  height: 40px;
+  border: 1px solid #eee;
+  cursor: pointer;
+  text-align: center;
+  background-color: #fff;
+  font-size: 14px;
+  line-height: 40px;
+  box-sizing: border-box;
+  transition: background 0.2s;
+}
+
+.day-button:hover {
+  background-color: #915e07;
+  color: #ffffff;
+  font-weight: bold;
+}
+
+.day-button.selected {
+  background-color: #924400;
+  color: white;
+  font-weight: bold;
+}
+
+select {
+  font-size: 16px;
+  margin: 10px 0 20px 0;
+  padding: 5px;
+}
+
+/* Responsive : moins de 4 mois par ligne sur petits écrans */
+@media (max-width: 1024px) {
+  .month {
+    width: 45%; /* 2 mois par ligne */
+  }
+}
+
+@media (max-width: 600px) {
+  .month {
+    width: 100%; /* 1 mois par ligne */
+  }
+}
+#calendarForm {
+  max-width: 100%;
+  margin: 20px auto;
+  padding: 15px;
+  background-color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+  box-sizing: border-box;
+}
+
+.calendar-container {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+}
+
+#validateBtn {
+  background-color: #924400;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 12px 30px;
+  font-size: 18px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  align-self: center;
+  user-select: none;
+}
+
+#validateBtn:hover,
+#validateBtn:focus {
+  background-color: #673500;
+  outline: none;
+  box-shadow: 0 0 8px rgba(255, 143, 44, 0.6);
+}

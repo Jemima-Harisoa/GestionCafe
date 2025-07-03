@@ -1,0 +1,76 @@
+/* Styles pour la table triable */
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    font-family: Arial, sans-serif;
+}
+
+.data-table th,
+.data-table td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+.data-table th {
+    background-color: #f2f2f2;
+    font-weight: bold;
+    position: relative;
+}
+
+/* Styles pour les colonnes triables */
+.data-table th.sortable {
+    cursor: pointer;
+    user-select: none;
+    transition: background-color 0.2s ease;
+}
+
+.data-table th.sortable:hover {
+    background-color: #e8e8e8;
+}
+
+/* Conteneur pour le texte et l'icône de tri */
+.sort-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+/* Styles pour les icônes de tri */
+.sort-icon {
+    margin-left: 8px;
+    font-size: 12px;
+    color: #666;
+    opacity: 0.7;
+    transition: opacity 0.2s ease;
+}
+
+.data-table th.sortable:hover .sort-icon {
+    opacity: 1;
+}
+
+/* Icône active lors du tri */
+.data-table th.sort-asc .sort-icon,
+.data-table th.sort-desc .sort-icon {
+    color: #007bff;
+    opacity: 1;
+}
+
+/* Animation légère pour les changements de tri */
+.data-table tbody tr {
+    transition: all 0.3s ease;
+}
+
+/* Styles supplémentaires pour améliorer l'apparence */
+.data-table tbody tr:hover {
+    background-color: #f9f9f9;
+}
+
+.data-table tbody tr:nth-child(even) {
+    background-color: #f8f9fa;
+}
+
+.data-table tbody tr:nth-child(even):hover {
+    background-color: #f1f3f4;
+}

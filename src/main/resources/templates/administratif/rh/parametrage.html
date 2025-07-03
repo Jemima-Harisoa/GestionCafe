@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CafeManager Pro - Gestion de Café</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/templates/styles.css}">
+</head>
+
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-left">
+            <div class="product-info">
+                <a th:href="@{/administratif}" data-page="dashboard" class="nav-link">
+                    <i class="fas fa-chart-line"></i>
+                    <img th:src="@{/images/logo/logo.jpg}" alt="Café">
+                </a>
+            </div>
+        </div>
+        <div class="header-right">
+            <div class="product-info">
+                <h1 class="page-title" id="pageTitle">Gestion de ressources humaines</h1>
+
+            </div>
+        </div>
+    </header>
+    <main class="content">
+        <!-- Sidebar  -->
+        <div class="sidebar" id="sidebar">    
+            <nav class="sidebar-nav">
+                <ul>
+                    <li class="nav-item active">
+                        <a th:href="@{/administratif/rh/gestion-employes}"  class="nav-link">
+                            <i class="fas fa-chart-line"></i>
+                            <span>Gestion des employes</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a th:href="@{/administratif/rh/gestion-salaires}"  class="nav-link">
+                            <i class="fas fa-boxes"></i>
+                            <span>Gestion des salaires</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a th:href="@{/administratif/rh/gestion-recrutements}"  class="nav-link">
+                            <i class="fas fa-cogs"></i>
+                            <span>Gestion des recrutements</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a th:href="@{/administratif/rh/gestion-conges}"  class="nav-link">
+                            <i class="fas fa-euro-sign"></i>
+                            <span>Gestion des conges et des jours feries</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a th:href="@{/administratif/rh/parametre}"  class="nav-link">
+                            <i class="fas fa-euro-sign"></i>
+                            <span>Parametrages</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+        <hr><br>
+        <!-- Grade -->
+        <div class="main-content" id="grade">
+            <h2>Gestion de grade</h2>
+            <p>Un grade correspond à un salaire brut, et un employé aura un grade</p>
+
+            <h4>Formulaire d'ajout de grade</h4>
+            <div class="form-showcase">
+                <form th:action="@{/administratif/rh/parametre/ajout-grade}" th:object="${grade}" method="post"
+                    class="form-example">
+                    <div class="form-group">
+                        <label class="form-label">Nom :</label>
+                        <input type="text" th:field="*{nom}" class="form-input" placeholder="Ex : Simple employé"
+                            required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Salaire (Ariary) :</label>
+                        <input type="number" th:field="*{salaire}" class="form-input" placeholder="Ex : 250000"
+                            required>
+                    </div>
+                    <button type="submit" class="btn primary">Ajouter</button>
+                    <br><br>
+                </form>
+            </div>
+
+            <div class="element-section">
+                <h4>Liste des grades</h4>
+                <div class="table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Nom</th>
+                                <th>Salaire (Ariary)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="grade : ${listeGrades}">
+                                <td><strong th:text="${grade.nom}">Nom</strong></td>
+                                <td th:text="${grade.salaire}">250000</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <hr><br>
+        <!-- Jour ferie  -->
+        <div class="main-content" id="jourFerie">
+            <h2>Gestion des jours feries</h2>
+            <p>Des dates de jours sans travailler pouvant etre paye ou pas</p>
+            <h4>Formulaire d'ajout de jour ferie</h4>
+            <div class="form-showcase">
+                <form th:action="@{/administratif/rh/parametre/ajout-jour-ferie}" th:object="${jourFerie}" method="post"
+                    class="form-example">
+                    <div class="form-group">
+                        <label class="form-label">Nom :</label>
+                        <input type="text" th:field="*{nom}" class="form-input" placeholder="Ex : Fête du travail"
+                            required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Date :</label>
+                        <input type="date" th:field="*{dateFerie}" class="form-input" required>
+                    </div>
+                    <button type="submit" class="btn primary">Ajouter</button>
+                    <br><br>
+                </form>
+            </div>
+
+            <div class="element-section">
+                <h4>Liste des jours fériés</h4>
+                <div class="table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Nom</th>
+                                <th>Date</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="jour : ${listeJoursFeries}">
+                                <td><strong th:text="${jour.nom}">Nom</strong></td>
+                                <td th:text="${jour.dateFerie}">01-05-2026</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+        <br>
+        <hr><br>
+
+        <!-- IRSA -->
+        <div class="main-content" id="irsa">
+            <h2>Gestion de l'IRSA</h2>
+            <p>Valeurs des taux d'impôt appliqués en fonction du salaire.</p>
+
+            <h4>Tranches IRSA</h4>
+            <form th:action="@{/administratif/rh/parametre/ajout-irsa}" th:object="${irsaWrapper}" method="post">
+                <table id="irsaTable" class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Taux (%)</th>
+                            <th>Salaire minimum</th>
+                            <th>Salaire maximum</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableIrsaBody">
+                        <tr th:each="ligne, iter : *{irsas}">
+                            <input type="hidden" th:field="*{irsas[__${iter.index}__].id}">
+                            <td><input type="number" step="0.01" th:field="*{irsas[__${iter.index}__].taux}" required>
+                            </td>
+                            <td><input type="number" step="0.01" th:field="*{irsas[__${iter.index}__].salaireMin}"
+                                    required></td>
+                            <td><input type="number" step="0.01" th:field="*{irsas[__${iter.index}__].salaireMax}"></td>
+                            <td>
+                                <button type="button" class="btn-supprimer" th:data-id="${ligne.id}"
+                                    onclick="supprimerLigne(this)">Supprimer</button>
+                            </td>
+
+                        </tr>
+                    </tbody>
+                </table>
+                <button type="button" onclick="ajouterLigne()">+ Ajouter une ligne</button>
+                <br><br>
+                <button type="submit" class="btn primary">Enregistrer</button>
+            </form>
+
+        </div>
+
+        <script>
+            let indexIrsa = document.querySelectorAll('#tableIrsaBody tr').length;
+
+            function ajouterLigne() {
+                const tbody = document.getElementById("tableIrsaBody");
+                const row = document.createElement("tr");
+
+                row.innerHTML = `
+            <input type="hidden" step="0.01" name="irsas[${indexIrsa}].id">   
+            <td><input type="number" step="0.01" name="irsas[${indexIrsa}].taux" required></td>
+            <td><input type="number" step="0.01" name="irsas[${indexIrsa}].salaireMin" required></td>
+            <td><input type="number" step="0.01" name="irsas[${indexIrsa}].salaireMax"></td>
+            <td><button type="button" onclick="supprimerLigne(this)">Supprimer</button></td>
+        `;
+                tbody.appendChild(row);
+                indexIrsa++;
+            }
+
+            function supprimerLigne(button) {
+                const row = button.closest("tr");
+                const id = button.dataset.id;
+
+                if (!id) {
+                    // Ligne pas encore enregistrée en base : on peut juste l'enlever du DOM
+                    row.remove();
+                    return;
+                }
+
+                if (!confirm("Supprimer définitivement cette tranche IRSA ?")) return;
+
+                fetch("/administratif/rh/parametre/supprimer-irsa", {
+                    method: "POST",
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    },
+                    body: `id=${encodeURIComponent(id)}`
+                })
+                    .then(response => {
+                        if (response.ok) {
+                            row.remove();
+                        } else {
+                            alert("Échec de la suppression !");
+                        }
+                    })
+                    .catch(error => {
+                        console.error("Erreur : ", error);
+                        alert("Erreur lors de la suppression !");
+                    });
+            }
+        </script>
+
+    </main>
+</body>
+
+<!-- Modal d'erreur IRSA -->
+<div id="popupErreur" class="modal" th:if="${erreur}">
+    <div class="modal-content">
+        <span class="close" onclick="fermerPopup()">&times;</span>
+        <h3>Erreur</h3>
+        <p th:text="${erreur}">Une erreur s'est produite</p>
+    </div>
+</div>
+
+<style>
+    .modal {
+        display: block;
+        /* affiché si th:if est vrai */
+        position: fixed;
+        z-index: 1000;
+        padding-top: 100px;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgba(0, 0, 0, 0.4);
+    }
+
+    .modal-content {
+        margin: auto;
+        padding: 20px;
+        background-color: white;
+        border-radius: 8px;
+        width: 40%;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        animation: slideIn 0.4s ease;
+    }
+
+    .close {
+        color: red;
+        float: right;
+        font-size: 24px;
+        font-weight: bold;
+        cursor: pointer;
+    }
+
+    @keyframes slideIn {
+        from {
+            transform: translateY(-50px);
+            opacity: 0;
+        }
+
+        to {
+            transform: translateY(0);
+            opacity: 1;
+        }
+    }
+</style>
+
+<script>
+    function fermerPopup() {
+        document.getElementById("popupErreur").style.display = "none";
+    }
+</script>
+
+</html>

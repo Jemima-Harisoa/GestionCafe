@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CafeManager Pro - Gestion de Café</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/templates/styles.css}">
+</head>
+
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-left">
+            <div class="product-info">
+                <a th:href="@{/administratif}" data-page="dashboard" class="nav-link">
+                    <i class="fas fa-chart-line"></i>
+                    <img th:src="@{/images/logo/logo.jpg}" alt="Café">
+                </a>
+            </div>
+        </div>
+        <div class="header-right">
+            <div class="product-info">
+                <h1 class="page-title" id="pageTitle">Gestion de ressources humaines</h1>
+
+            </div>
+        </div>
+    </header>
+    <main class="content">
+        <!-- Sidebar  -->
+        <div class="sidebar" id="sidebar">
+            <nav class="sidebar-nav">
+                <ul>
+                    <li class="nav-item active">
+                        <a th:href="#" data-page="dashboard" class="nav-link">
+                            <i class="fas fa-chart-line"></i>
+                            <span>Gestion des employes</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a th:href="#" data-page="stock" class="nav-link">
+                            <i class="fas fa-boxes"></i>
+                            <span>Gestion des salaires</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a th:href="#" data-page="production" class="nav-link">
+                            <i class="fas fa-cogs"></i>
+                            <span>Gestion des conges et des jours feries</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a th:href="#" data-page="finances" class="nav-link">
+                            <i class="fas fa-euro-sign"></i>
+                            <span>Gestion des recrutement</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a th:href="#" data-page="finances" class="nav-link">
+                            <i class="fas fa-euro-sign"></i>
+                            <span>Parametrages</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+
+        <!-- Grade  -->
+        <div class="main-content" id="grade">
+            <h2>Gestion de grade</h2>
+            <p>Une grade correspond a un salaire brut et un employe aura une grade</p>
+            <h4>Formulaire d'ajout de grade</h4>
+            <div class="form-showcase">
+                <form th:action="@{/ajout-grade}" method="post" class="form-example">
+                    <div class="form-group">
+                        <label class="form-label">Nom :</label>
+                        <input type="text" class="form-input" placeholder="Ex : Simple employe" name="nom" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Salaire (Ariary) :</label>
+                        <input type="number" class="form-input" placeholder="Ex : 250000" name="salaire" required>
+                    </div>
+                    <button type="submit" class="btn primary">Ajouter</button>
+                    <br><br>
+                </form>
+            </div>
+            <div class="element-section">
+                <h4>Liste des grades</h4>
+                <div class="table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Nom</th>
+                                <th>Salaire</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Simple employe</strong></td>
+                                <td>500000</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <br>
+        <hr><br>
+        <!-- Serie bac  -->
+        <div class="main-content" id="serieBac">
+            <h2>Gestion des series de baccalaureat</h2>
+            <p>Un employe peut avoir un ou plusieurs baccalaureat à une serie</p>
+            <h4>Formulaire d'ajout de serie</h4>
+            <div class="form-showcase">
+                <form th:action="@{/ajout-serie-bac}" method="post" class="form-example">
+                    <div class="form-group">
+                        <label class="form-label">Nom :</label>
+                        <input type="text" class="form-input" placeholder="Ex : S" name="valeur" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Description :</label>
+                        <input type="text" class="form-input" placeholder="Ex : Serie scientifique" name="description"
+                            required>
+                    </div>
+                    <button type="submit" class="btn primary">Ajouter</button>
+                    <br><br>
+                </form>
+            </div>
+            <div class="element-section">
+                <h4>Liste des series</h4>
+                <div class="table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Nom</th>
+                                <th>Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>S</strong></td>
+                                <td>Serie scientifique</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <br>
+        <hr><br>
+
+        <!-- Formation  -->
+        <div class="main-content" id="formation">
+            <h2>Gestion des fomrmations</h2>
+            <p>Un employe peut avoir effectuer des formations academiques et professionnelles dans differents domaines
+            </p>
+            <h4>Formulaire d'ajout de formation</h4>
+            <div class="form-showcase">
+                <form th:action="@{/ajout-formation}" method="post" class="form-example">
+                    <div class="form-group">
+                        <label class="form-label">Nom :</label>
+                        <input type="text" class="form-input" placeholder="Ex : Licence professionnelle" name="valeur"
+                            required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Description :</label>
+                        <input type="text" class="form-input" placeholder="Ex : 3 annees d' etudes" name="description"
+                            required>
+                    </div>
+                    <button type="submit" class="btn primary">Ajouter</button>
+                    <br><br>
+                </form>
+            </div>
+            <div class="element-section">
+                <h4>Liste des formations</h4>
+                <div class="table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Nom</th>
+                                <th>Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Licence professionnelle</strong></td>
+                                <td>3 annees d' etudes</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <br>
+        <hr><br>
+
+        <!-- Experience  -->
+        <div class="main-content" id="experience">
+            <h2>Gestion des experiences</h2>
+            <p>Un employe peut avoir accumuler des annees d'experience professionnelle</p>
+            <h4>Formulaire d'ajout d' experience</h4>
+            <div class="form-showcase">
+                <form th:action="@{/ajout-experience}" method="post" class="form-example">
+                    <div class="form-group">
+                        <label class="form-label">Valeur (annee) :</label>
+                        <input type="text" class="form-input" placeholder="Ex : 1" name="valeur" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Description :</label>
+                        <input type="text" class="form-input" placeholder="Ex : Peu experimente" name="description"
+                            required>
+                    </div>
+                    <button type="submit" class="btn primary">Ajouter</button>
+                    <br><br>
+                </form>
+            </div>
+            <div class="element-section">
+                <h4>Liste des experiences</h4>
+                <div class="table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Valeur</th>
+                                <th>Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>1</strong></td>
+                                <td>Peu experimente</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <br>
+        <hr><br>
+
+        <!-- Langue  -->
+        <div class="main-content" id="langue">
+            <h2>Gestion des langues</h2>
+            <p>Un employe peut etre a l'aise dans plusieurs langues</p>
+            <h4>Formulaire d'ajout d' experience</h4>
+            <div class="form-showcase">
+                <form th:action="@{/ajout-langue}" method="post" class="form-example">
+                    <div class="form-group">
+                        <label class="form-label">Nom :</label>
+                        <input type="text" class="form-input" placeholder="Ex : Anglais" name="valeur" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Description :</label>
+                        <input type="text" class="form-input" placeholder="Ex : Langue britannique et americain"
+                            name="description" required>
+                    </div>
+                    <button type="submit" class="btn primary">Ajouter</button>
+                    <br><br>
+                </form>
+            </div>
+            <div class="element-section">
+                <h4>Liste des experiences</h4>
+                <div class="table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Nom</th>
+                                <th>Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Anglais</strong></td>
+                                <td>Langue britannique et americain</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <br>
+        <hr><br>
+
+        <!-- Jour ferie  -->
+        <div class="main-content" id="jourFerie">
+            <h2>Gestion des jours feries</h2>
+            <p>Des dates de jours sans travailler pouvant etre paye ou pas</p>
+            <h4>Formulaire d'ajout de jour ferie</h4>
+            <div class="form-showcase">
+                <form th:action="@{/administratif/rh/ajout-jour-ferie}" th:object="${jourFerie}" method="post"
+                    class="form-example">
+                    <div class="form-group">
+                        <label class="form-label">Nom :</label>
+                        <input type="text" th:field="*{nom}" class="form-input" placeholder="Ex : Fête du travail"
+                            required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Date :</label>
+                        <input type="date" th:field="*{dateFerie}" class="form-input" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Payé :</label>
+                        <input type="checkbox" th:field="*{paye}" class="form-input">
+                    </div>
+                    <button type="submit" class="btn primary">Ajouter</button>
+                    <br><br>
+                </form>
+            </div>
+
+            <div class="element-section">
+                <h4>Liste des jours fériés</h4>
+                <div class="table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Nom</th>
+                                <th>Date</th>
+                                <th>Payé</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="jour : ${listeJoursFeries}">
+                                <td><strong th:text="${jour.nom}">Nom</strong></td>
+                                <td th:text="${#temporals.format(jour.dateFerie, 'dd-MM-yyyy')}">01-05-2026</td>
+                                <td th:text="${jour.paye ? 'Affirmatif' : 'Non'}">Affirmatif</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+        <br>
+        <hr><br>
+
+        <!-- Congés  -->
+        <div class="main-content" id="typeConge">
+            <h2>Gestion des types de conges</h2>
+            <p>Les types de conges definissent leur raison et s'ils sont payes ou non</p>
+            <h4>Formulaire d'ajout de type de conge</h4>
+            <div class="form-showcase">
+                <form th:action="@{/ajout-type-conge}" method="post" class="form-example">
+                    <div class="form-group">
+                        <label class="form-label">Nom :</label>
+                        <input type="text" class="form-input" placeholder="Ex : Maladie" name="nom" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Description :</label>
+                        <input type="text" class="form-input" name="description"
+                            placeholder="Ex : Raison medicale : hospitalisation ou repos" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Paye :</label>
+                        <input type="checkbox" class="form-input" name="paye">
+                    </div>
+                    <button type="submit" class="btn primary">Ajouter</button>
+                    <br><br>
+                </form>
+            </div>
+            <div class="element-section">
+                <h4>Liste des jours feries</h4>
+                <div class="table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Nom</th>
+                                <th>Description</th>
+                                <th>Paye</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Maladie</strong></td>
+                                <td> Raison medicale : hospitalisation ou repos</td>
+                                <td>Affirmatif</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <br>
+        <hr><br>
+
+        <!-- commission  -->
+        <div class="main-content" id="commission">
+            <h2>Gestion des commissions</h2>
+            <p>Les commissions sont des sommes ajouter aux salaires des employes pour diverses raisons</p>
+            <h4>Formulaire d'ajout de raison de commission</h4>
+            <div class="form-showcase">
+                <form th:action="@{/ajout-raison-comission}" method="post" class="form-example">
+                    <div class="form-group">
+                        <label class="form-label">Raison :</label>
+                        <input type="text" class="form-input" placeholder="Ex : Sur-vente" name="valeur" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Description :</label>
+                        <input type="text" class="form-input" name="description"
+                            placeholder="Ex : Beaucoup de vent effectuer" required>
+                    </div>
+                    <button type="submit" class="btn primary">Ajouter</button>
+                    <br><br>
+                </form>
+            </div>
+            <div class="element-section">
+                <h4>Liste des raisons de commissions</h4>
+                <div class="table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Raison</th>
+                                <th>Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Sur-vente</strong></td>
+                                <td>Beaucoup de vent effectuer</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <br>
+        <hr><br>
+
+        <!-- avance  -->
+        <div class="main-content" id="avance">
+            <h2>Gestion des avances</h2>
+            <p>Les avances sont des sommes prelever aux salaires des employes en avance pour diverses de leurs raisons
+            </p>
+            <h4>Formulaire d'ajout de raison d'avance</h4>
+            <div class="form-showcase">
+                <form th:action="@{/ajout-raison-avance}" method="post" class="form-example">
+                    <div class="form-group">
+                        <label class="form-label">Raison :</label>
+                        <input type="text" class="form-input" placeholder="Ex : Maladie" name="valeur" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Description :</label>
+                        <input type="text" class="form-input" name="description"
+                            placeholder="Ex : Operation, Medicaments, etc" required>
+                    </div>
+                    <button type="submit" class="btn primary">Ajouter</button>
+                    <br><br>
+                </form>
+            </div>
+            <div class="element-section">
+                <h4>Liste des raisons d' avance</h4>
+                <div class="table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Raison</th>
+                                <th>Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Maladie</strong></td>
+                                <td>Operation, Medicaments, etc</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <br>
+        <hr><br>
+
+        <!-- avance  -->
+        <div class="main-content" id="irsa">
+            <h2>Gestion de l'IRSA</h2>
+            <p>Valeur de l'Impôt sur les Revenus Salariaux et Assimilés</p>
+            <h4>Formulaire d'ajout de l'irsa</h4>
+
+        </div>
+
+    </main>
+</body>
+
+</html>

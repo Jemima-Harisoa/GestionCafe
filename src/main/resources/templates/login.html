@@ -1,0 +1,87 @@
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CafeManager Pro</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Utilisation de Thymeleaf pour inclure les ressources statiques -->
+    <link rel="stylesheet" th:href="@{/templates/styles.css}">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-left">
+            <button class="mobile-toggle">
+                <i class="fas fa-bars"></i>
+            </button>
+            <div class="product-info">
+                <!-- Utilisation de Thymeleaf pour les images -->
+                <img th:src="@{/images/logo/logo.jpg}" alt="Café">
+            </div>
+        </div>
+        <div class="header-right">
+            <button class="mobile-toggle">
+                <i class="fas fa-bars"></i>
+            </button>
+            <h1 class="page-title" id="pageTitle">Caf-E</h1>
+        </div>
+    </header>
+    
+    <main class="content">
+        <!-- Forms Section -->
+        <div class="element-section">
+            <h3>Se connecter pour la gestion administrative</h3>
+            <div class="form-showcase">
+                <form th:action="@{/login-administratif}" method="post" class="form-example">
+                    <div class="form-group">
+                        <label for="admin-name" class="form-label">Nom :</label>
+                        <input value="admin"  id="admin-name" type="text" class="form-input" placeholder="Saisir votre nom d' administrateur..." name="nom" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="admin-pass" class="form-label">Mot de passe :</label>
+                        <input value="admin"  id="admin-pass" type="password" class="form-input" name="motDePasse" required>
+                    </div>
+                    <button type="submit" class="btn primary">Se connecter</button>
+                </form>
+            </div>
+        </div>
+        <!-- Afficher les erreurs si elles existent -->
+        <div th:if="${erreurAdministratif}">
+            <div class="alert danger">
+                <i class="fas fa-times-circle"></i>
+                <div>
+                    <strong>Erreur!</strong> <span th:text="${erreurAdministratif}"></span>.
+                </div>
+            </div>
+        </div>
+        <div class="element-section">
+            <h3>Se connecter pour la gestion quotidienne</h3>
+            <div class="form-showcase">
+                <form th:action="@{/login-quotidien}" method="post" class="form-example">
+                    <div class="form-group">
+                        <label for="emp-name" class="form-label">Nom :</label>
+                        <input value="admin" id="emp-name" type="text" class="form-input" placeholder="Saisir votre nom ..." name="nom" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="emp-pass" class="form-label">Mot de passe :</label>
+                        <input value="admin" id="emp-pass" type="password" class="form-input" name="motDePasse" required>
+                    </div>
+                    <button type="submit" class="btn primary">Se connecter</button>
+                </form>
+            </div>
+        </div>
+        <div th:if="${erreurQuotidien}">
+            <div class="alert danger">
+                <i class="fas fa-times-circle"></i>
+                <div>
+                    <strong>Erreur!</strong> <span th:text="${erreurQuotidien}"></span>.
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Utilisation de Thymeleaf pour le script -->
+    <!-- <script th:src="@{/templates/script.js}"></script> -->
+</body>
+</html>

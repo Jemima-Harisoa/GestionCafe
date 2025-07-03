@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Statistiques - Caf-E</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
+          rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/templates/styles.css}">
+</head>
+
+<body>
+<div th:replace="~{administratif/production/layout/sidebar :: sidebar}"></div>
+<div class="main-content" id="mainContent">
+    <div th:replace="~{administratif/production/layout/header :: header('Statistiques')}"></div>
+    <main class="content">
+        <!-- Modern Header -->
+        <div class="page-header modern-header">
+            <div class="header-content">
+                <div class="header-title-section">
+                    <div class="header-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <div>
+                        <h2>Statistiques & Analyses</h2>
+                        <p class="header-subtitle">Analyse des ventes et performances produits</p>
+                    </div>
+                </div>
+                <div class="header-actions">
+                    <button class="btn outline">
+                        <i class="fas fa-download"></i>
+                        Exporter
+                    </button>
+                    <button class="btn primary">
+                        <i class="fas fa-sync-alt"></i>
+                        Actualiser
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Chart Section - Priorité principale -->
+        <div class="chart-card hover-glow" style="margin-bottom: 2rem;">
+            <div class="card-header">
+                <h3><i class="fas fa-chart-area"></i> Évolution des ventes</h3>
+                <!-- Ce formulaire NE DOIT servir qu'à la courbe -->
+                <form id="courbeForm" method="get" th:action="@{/administratif/production/stats}"
+                      style="display: flex; gap: 1rem; align-items: center;">
+                    <select name="periodeCourbe" class="form-select" style="width: auto;">
+                        <option value="jour" th:selected="${periodeCourbe == 'jour'}">60 derniers jours</option>
+                        <option value="mois" th:selected="${periodeCourbe == 'mois'}">12 derniers mois</option>
+                        <option value="annee" th:selected="${periodeCourbe == 'annee'}">3 dernières années</option>
+                    </select>
+                    <button type="submit" class="btn outline small">
+                        <i class="fas fa-sync-alt"></i>
+                        Actualiser
+                    </button>
+                </form>
+            </div>
+
+            <div style="padding: 2rem;">
+                <canvas id="courbeTotalChart" width="900" height="500" style="max-height:700px; height:400px;"></canvas>
+
+                <div
+                    style="margin-top: 2rem; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem;">
+                    <div class="stat-card outline">
+                        <div class="stat-info">
+                            <h4 style="color: var(--gray-600); font-size: 0.9rem; margin-bottom: 0.5rem;">
+                                <i class="fas fa-shopping-cart"></i>
+                                Moyenne Produits/Période
+                            </h4>
+                            <p class="stat-value" style="font-size: 1.5rem; color: var(--success-color);"
+                               th:text="${#numbers.formatDecimal(moyenneProduits, 1, 'COMMA', 2, 'POINT')}"
+                               id="moyenneProduit">0
+                            </p>
+                        </div>
+                    </div>
+                    <div class="stat-card outline">
+                        <div class="stat-info">
+                            <h4 style="color: var(--gray-600); font-size: 0.9rem; margin-bottom: 0.5rem;">
+                                <i class="fas fa-euro-sign"></i>
+                                Bénéfice Moyen/Période
+                            </h4>
+                            <p class="stat-value" style="font-size: 1.5rem; color: var(--primary-color);"
+                               th:text="${#numbers.formatDecimal(beneficeMoyen, 1, 'COMMA', 2, 'POINT')} + '€'"
+                               id="beneficeMoyen">0€
+                            </p>
+                        </div>
+                    </div>
+                    <div class="stat-card outline">
+                        <div class="stat-info">
+                            <h4 style="color: var(--gray-600); font-size: 0.9rem; margin-bottom: 0.5rem;">
+                                <i class="fas fa-calendar"></i>
+                                Période Analysée
+                            </h4>
+                            <p class="stat-value" style="font-size: 1.2rem; color: var(--info-color);">
+                                <span th:if="${periodeCourbe == 'jour'}">60 derniers jours</span>
+                                <span th:if="${periodeCourbe == 'mois'}">12 derniers mois</span>
+                                <span th:if="${periodeCourbe == 'annee'}">3 dernières années</span>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="stat-card outline">
+                        <div class="stat-info">
+                            <h4 style="color: var(--gray-600); font-size: 0.9rem; margin-bottom: 0.5rem;">
+                                <i class="fas fa-chart-bar"></i>
+                                Total Vendu
+                            </h4>
+                            <p class="stat-value" style="font-size: 1.2rem; color: var(--warning-color);"
+                               th:text="${totalVenduPeriode != null ? #numbers.formatDecimal(totalVenduPeriode, 1, 'COMMA', 2, 'POINT') + ' unités' : '0 unités'}">0 unités
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Stats Grid - Métriques générales -->
+        <div class="stats-grid" style="margin-bottom: 2rem;">
+            <div class="stat-card primary hover-lift">
+                <div class="stat-icon">
+                    <i class="fas fa-chart-bar"></i>
+                </div>
+                <div class="stat-info">
+                    <h3>Produits Analysés</h3>
+                    <p class="stat-value" th:text="${stats != null ? #lists.size(stats) : 0}">0</p>
+                </div>
+            </div>
+
+            <div class="stat-card success hover-lift">
+                <div class="stat-icon">
+                    <i class="fas fa-shopping-cart"></i>
+                </div>
+                <div class="stat-info">
+                    <h3>Quantité Totale</h3>
+                    <p class="stat-value"
+                       th:text="${stats != null ? #aggregates.sum(stats.![quantiteTotale]) : 0}">0</p>
+                </div>
+            </div>
+
+            <div class="stat-card warning hover-lift">
+                <div class="stat-icon">
+                    <i class="fas fa-euro-sign"></i>
+                </div>
+                <div class="stat-info">
+                    <h3>Bénéfice Total</h3>
+                    <p class="stat-value"
+                       th:text="${stats != null ? #numbers.formatDecimal(#aggregates.sum(stats.![beneficeTotal]), 1, 'COMMA', 2, 'POINT') + '€' : '0€'}">0€
+                    </p>
+                </div>
+            </div>
+
+            <div class="stat-card info hover-lift">
+                <div class="stat-icon">
+                    <i class="fas fa-chart-line"></i>
+                </div>
+                <div class="stat-info">
+                    <h3>Tendance</h3>
+                    <p class="stat-value">+12%</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Filters Section -->
+        <div class="chart-card hover-glow" style="margin-bottom: 2rem;">
+            <div class="card-header">
+                <h3><i class="fas fa-filter"></i> Filtres Avancés</h3>
+            </div>
+            <!-- Ce formulaire NE DOIT servir qu'au tableau des stats produits -->
+            <form id="statsFiltreForm" method="get" th:action="@{/administratif/production/stats-filtre}" style="padding: 2rem;">
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
+                    <!-- Date Filters -->
+                    <div class="form-group">
+                        <label class="form-label">
+                            <i class="fas fa-calendar-day"></i>
+                            Filtres par date unique
+                        </label>
+                        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem;">
+                            <select name="annee" class="form-select">
+                                <option value="" th:selected="${annee == null}">Année</option>
+                                <option th:each="a : ${#numbers.sequence(2020, 2030)}" th:value="${a}" th:text="${a}"
+                                        th:selected="${a == annee}"></option>
+                            </select>
+                            <select name="mois" class="form-select">
+                                <option value="" th:selected="${mois == null}">Mois</option>
+                                <option th:each="m : ${#numbers.sequence(1, 12)}" th:value="${m}" th:text="${m}"
+                                        th:selected="${m == mois}"></option>
+                            </select>
+                            <select name="jourMois" class="form-select">
+                                <option value="" th:selected="${jourMois == null}">Jour du mois</option>
+                                <option th:each="j : ${#numbers.sequence(1, 31)}" th:value="${j}" th:text="${j}"
+                                        th:selected="${j == jourMois}"></option>
+                            </select>
+                            <select name="jourSemaine" class="form-select">
+                                <option value="" th:selected="${jourSemaine == null}">Jour semaine</option>
+                                <option th:value="1" th:selected="${jourSemaine == 1}">Lundi</option>
+                                <option th:value="2" th:selected="${jourSemaine == 2}">Mardi</option>
+                                <option th:value="3" th:selected="${jourSemaine == 3}">Mercredi</option>
+                                <option th:value="4" th:selected="${jourSemaine == 4}">Jeudi</option>
+                                <option th:value="5" th:selected="${jourSemaine == 5}">Vendredi</option>
+                                <option th:value="6" th:selected="${jourSemaine == 6}">Samedi</option>
+                                <option th:value="7" th:selected="${jourSemaine == 7}">Dimanche</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Range Filters -->
+                    <div class="form-group">
+                        <label class="form-label">
+                            <i class="fas fa-calendar-week"></i>
+                            Filtres par intervalle
+                        </label>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                            <input type="datetime-local" name="dateDebut" th:value="${dateDebut}" class="form-input"
+                                   placeholder="Date début"/>
+                            <input type="datetime-local" name="dateFin" th:value="${dateFin}" class="form-input"
+                                   placeholder="Date fin"/>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="display: flex; gap: 1rem; justify-content: flex-end; margin-top: 1.5rem; padding-top: 1.5rem;
+                border-top: 2px solid rgba(139, 69, 19, 0.1);">
+                    <button type="reset" class="btn outline">
+                        <i class="fas fa-undo"></i>
+                        Réinitialiser
+                    </button>
+                    <button type="submit" class="btn primary">
+                        <i class="fas fa-search"></i>
+                        Appliquer Filtres
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Sales Data Table -->
+        <div class="table-container" style="margin-bottom: 2rem;">
+            <div
+                style="padding: 1.5rem 2rem; border-bottom: 1px solid rgba(139, 69, 19, 0.1); background: rgba(139, 69, 19, 0.05);">
+                <h3 style="margin: 0; display: flex; align-items: center; gap: 0.75rem;">
+                    <i class="fas fa-table"></i>
+                    Statistiques des ventes par produit
+                    <span style="font-size: 0.8rem; background: var(--primary-color); color: white; padding: 0.25rem 0.75rem; border-radius: 12px;"
+                          th:text="${stats != null ? #lists.size(stats) : 0} + ' produits'">0 produits</span>
+                </h3>
+            </div>
+            <table class="data-table">
+                <thead>
+                <tr>
+                    <th><i class="fas fa-tag"></i> Nom produit</th>
+                    <th><i class="fas fa-shopping-cart"></i> Quantité vendue</th>
+                    <th><i class="fas fa-euro-sign"></i> Bénéfice total</th>
+                    <th><i class="fas fa-percentage"></i> Performance</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="stat : ${stats}">
+                    <td>
+                        <div style="display: flex; align-items: center; gap: 0.75rem;">
+                            <div
+                                style="width: 40px; height: 40px; border-radius: 50%; background: var(--gradient-primary);
+                                display: flex; align-items: center; justify-content: center; color: white; font-weight: bold;">
+                                <span th:text="${#strings.substring(stat.produitNom, 0, 1)}">P</span>
+                            </div>
+                            <span th:text="${stat.produitNom}">Produit</span>
+                        </div>
+                    </td>
+                    <td>
+                        <strong style="color: var(--success-color);" th:text="${stat.quantiteTotale}">0</strong>
+                    </td>
+                    <td>
+                        <strong style="color: var(--primary-color);"
+                                th:text="${#numbers.formatDecimal(stat.beneficeTotal, 1, 'COMMA', 2, 'POINT')} + '€'">0€
+                        </strong>
+                    </td>
+                    <td>
+                        <div class="progress-bar" style="width: 100px;">
+                            <div class="progress"
+                                 th:style="'width: ' + (${maxQuantiteTotale > 0} ? (${stat.quantiteTotale * 100 / maxQuantiteTotale}) : 0) + '%'">
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <tr th:if="${#lists.isEmpty(stats)}">
+                    <td colspan="4" style="text-align: center; padding: 3rem; color: var(--gray-500);">
+                        <i class="fas fa-info-circle"
+                           style="font-size: 2rem; margin-bottom: 1rem; opacity: 0.5;"></i>
+                        <p style="margin: 0;">Aucune donnée disponible pour les critères sélectionnés</p>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </main>
+</div>
+
+<script th:src="@{/templates/script.js}"></script>
+<script th:src="@{/js/chart.js}"></script>
+<script th:src="@{/js/production/script.js}"></script>
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    // Correction : valeurs par défaut pour labels/data si null
+    let labels = /*[[${labels}]]*/ [];
+    let data = /*[[${data}]]*/ [];
+
+    if (!labels || labels.length === 0) {
+        const today = new Date();
+        labels = [];
+        for (let i = 59; i >= 0; i--) {
+            const d = new Date(today);
+            d.setDate(today.getDate() - i);
+            labels.push(d.toISOString().slice(0, 10));
+        }
+    }
+    if (!data || data.length === 0) {
+        data = Array(labels.length).fill(0);
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const canvas = document.getElementById('courbeTotalChart');
+        if (canvas && typeof Chart !== "undefined") {
+            const ctx = canvas.getContext('2d');
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Total produits vendus',
+                        data: data,
+                        borderColor: 'rgba(139, 69, 19, 1)',
+                        backgroundColor: 'rgba(139, 69, 19, 0.1)',
+                        fill: true,
+                        tension: 0.4,
+                        pointBackgroundColor: 'rgba(139, 69, 19, 1)',
+                        pointBorderColor: '#fff',
+                        pointBorderWidth: 2,
+                        pointRadius: 5,
+                        pointHoverRadius: 8
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: true,
+                            position: 'top',
+                            labels: {
+                                usePointStyle: true,
+                                padding: 20
+                            }
+                        },
+                        title: {
+                            display: true,
+                            text: 'Évolution des ventes - ' + /*[[${periodeCourbe}]]*/ 'période',
+                            font: {
+                                size: 16,
+                                weight: 'bold'
+                            },
+                            padding: 20
+                        },
+                        tooltip: {
+                            backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                            titleColor: '#fff',
+                            bodyColor: '#fff',
+                            borderColor: 'rgba(139, 69, 19, 1)',
+                            borderWidth: 1
+                        }
+                    },
+                    scales: {
+                        x: {
+                            type: 'category',
+                            title: {
+                                display: true,
+                                text: 'Période',
+                                font: {
+                                    weight: 'bold'
+                                }
+                            },
+                            ticks: {
+                                autoSkip: true,
+                                maxRotation: 45,
+                                minRotation: 0
+                            },
+                            grid: {
+                                color: 'rgba(139, 69, 19, 0.1)',
+                                drawBorder: false
+                            }
+                        },
+                        y: {
+                            title: {
+                                display: true,
+                                text: 'Quantité totale',
+                                font: {
+                                    weight: 'bold'
+                                }
+                            },
+                            beginAtZero: true,
+                            grid: {
+                                color: 'rgba(139, 69, 19, 0.1)',
+                                drawBorder: false
+                            },
+                            ticks: {
+                                callback: function(value) {
+                                    return value + ' unités';
+                                }
+                            }
+                        }
+                    },
+                    interaction: {
+                        intersect: false,
+                        mode: 'index'
+                    },
+                    elements: {
+                        line: {
+                            borderWidth: 3
+                        }
+                    }
+                }
+            });
+        }
+    });
+    /*]]>*/
+</script>
+</body>
+
+</html>

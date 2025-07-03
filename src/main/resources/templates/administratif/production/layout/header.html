@@ -1,0 +1,19 @@
+<header class="header" th:fragment="header(title)">
+    <div class="header-left">
+        <button class="mobile-toggle" id="mobileToggle">
+            <i class="fas fa-bars"></i>
+        </button>
+        <h1 th:text="${title}">Welcome</h1>
+        <div class="product-info">
+            <!-- Lien vers la page administratif -->
+            <a th:href="@{/administratif}" data-page="dashboard" class="nav-link">
+                <i class="fas fa-chart-line"></i>
+            </a>
+        </div>
+    </div>
+    <div class="header-right" style="position:absolute; top:0; right:0; padding:16px;">
+        <a th:href="@{/administratif}" class="nav-link" style="font-weight:bold; color:#333; text-decoration:none; display:flex; align-items:center; gap:6px;">
+            <i class="fas fa-home"></i> Accueil administratif
+        </a>
+    </div>
+</header>

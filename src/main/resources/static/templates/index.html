@@ -1,0 +1,1623 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CafeManager Pro - Gestion de Café</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
+          rel="stylesheet">
+    <!-- Utilisation de Thymeleaf pour la gestion des ressources CSS -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+        <div class="logo">
+            <i class="fas fa-coffee"></i>
+            <span>CafeManager Pro</span>
+        </div>
+        <button class="sidebar-toggle" id="sidebarToggle">
+            <i class="fas fa-bars"></i>
+        </button>
+    </div>
+
+    <nav class="sidebar-nav">
+        <ul>
+            <li class="nav-item active">
+                <a href="#" data-page="dashboard" class="nav-link">
+                    <i class="fas fa-chart-line"></i>
+                    <span>Tableau de Bord</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#" data-page="stock" class="nav-link">
+                    <i class="fas fa-boxes"></i>
+                    <span>Gestion Stock</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#" data-page="production" class="nav-link">
+                    <i class="fas fa-cogs"></i>
+                    <span>Production</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#" data-page="finances" class="nav-link">
+                    <i class="fas fa-euro-sign"></i>
+                    <span>Finances</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#" data-page="elements" class="nav-link">
+                    <i class="fas fa-palette"></i>
+                    <span>Éléments UI</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#" data-page="orders" class="nav-link">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span>Commandes</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#" data-page="customers" class="nav-link">
+                    <i class="fas fa-users"></i>
+                    <span>Clients</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#" data-page="reports" class="nav-link">
+                    <i class="fas fa-file-alt"></i>
+                    <span>Rapports</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</div>
+
+<!-- Main Content -->
+<div class="main-content" id="mainContent">
+    <!-- Header -->
+    <header class="header">
+        <div class="header-left">
+            <button class="mobile-toggle" id="mobileToggle">
+                <i class="fas fa-bars"></i>
+            </button>
+            <h1 class="page-title" id="pageTitle">Tableau de Bord</h1>
+        </div>
+        <div class="header-right">
+            <div class="search-box">
+                <i class="fas fa-search"></i>
+                <input type="text" placeholder="Rechercher...">
+            </div>
+            <div class="notifications">
+                <i class="fas fa-bell"></i>
+                <span class="notification-badge">3</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Content Area -->
+    <main class="content">
+        <!-- Dashboard Page -->
+        <div class="page active" id="dashboard-page">
+            <div class="stats-grid">
+                <div class="stat-card primary hover-lift">
+                    <div class="stat-icon">
+                        <i class="fas fa-euro-sign"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3>Ventes Aujourd'hui</h3>
+                        <p class="stat-value">1,250€</p>
+                        <span class="stat-change positive"><i class="fas fa-arrow-up"></i> +12%</span>
+                    </div>
+                </div>
+
+                <div class="stat-card success hover-lift">
+                    <div class="stat-icon">
+                        <i class="fas fa-coffee"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3>Cafés Vendus</h3>
+                        <p class="stat-value">342</p>
+                        <span class="stat-change positive"><i class="fas fa-arrow-up"></i> +8%</span>
+                    </div>
+                </div>
+
+                <div class="stat-card warning hover-lift">
+                    <div class="stat-icon">
+                        <i class="fas fa-boxes"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3>Stock Restant</h3>
+                        <p class="stat-value">85%</p>
+                        <span class="stat-change negative"><i class="fas fa-arrow-down"></i> -5%</span>
+                    </div>
+                </div>
+
+                <div class="stat-card info hover-lift">
+                    <div class="stat-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3>Clients Actifs</h3>
+                        <p class="stat-value">1,420</p>
+                        <span class="stat-change positive"><i class="fas fa-arrow-up"></i> +15%</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="charts-grid">
+                <div class="chart-card hover-glow">
+                    <h3><i class="fas fa-chart-area"></i> Ventes Hebdomadaires</h3>
+                    <canvas id="salesChart" style="height: 300px;"></canvas>
+                </div>
+                <div class="chart-card hover-glow">
+                    <h3><i class="fas fa-star"></i> Produits Populaires</h3>
+                    <div class="popular-products">
+                        <div class="product-item">
+                            <span class="product-name">Espresso</span>
+                            <div class="progress-bar">
+                                <div class="progress" style="width: 85%"></div>
+                            </div>
+                            <span class="percentage">85%</span>
+                        </div>
+                        <div class="product-item">
+                            <span class="product-name">Cappuccino</span>
+                            <div class="progress-bar">
+                                <div class="progress" style="width: 72%"></div>
+                            </div>
+                            <span class="percentage">72%</span>
+                        </div>
+                        <div class="product-item">
+                            <span class="product-name">Latte</span>
+                            <div class="progress-bar">
+                                <div class="progress" style="width: 68%"></div>
+                            </div>
+                            <span class="percentage">68%</span>
+                        </div>
+                        <div class="product-item">
+                            <span class="product-name">Americano</span>
+                            <div class="progress-bar">
+                                <div class="progress" style="width: 55%"></div>
+                            </div>
+                            <span class="percentage">55%</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Stock Page -->
+        <div class="page" id="stock-page">
+            <div class="page-header">
+                <h2><i class="fas fa-boxes"></i> Gestion des Stocks</h2>
+                <button class="btn primary">
+                    <i class="fas fa-plus"></i>
+                    Ajouter Produit
+                </button>
+            </div>
+
+            <div class="table-container">
+                <table class="data-table">
+                    <thead>
+                    <tr>
+                        <th><i class="fas fa-tag"></i> Produit</th>
+                        <th><i class="fas fa-weight"></i> Quantité</th>
+                        <th><i class="fas fa-ruler"></i> Unité</th>
+                        <th><i class="fas fa-euro-sign"></i> Prix Unitaire</th>
+                        <th><i class="fas fa-info-circle"></i> Statut</th>
+                        <th><i class="fas fa-cogs"></i> Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>
+                            <div class="product-info">
+                                <img src="https://via.placeholder.com/50/8B4513/FFFFFF?text=C" alt="Café">
+                                <span>Grains Arabica Premium</span>
+                            </div>
+                        </td>
+                        <td><strong>15 kg</strong></td>
+                        <td>kg</td>
+                        <td><strong>12.50€</strong></td>
+                        <td><span class="badge success">En Stock</span></td>
+                        <td>
+                            <button class="btn-icon tooltip" data-tooltip="Modifier"><i class="fas fa-edit"></i>
+                            </button>
+                            <button class="btn-icon danger tooltip" data-tooltip="Supprimer"><i
+                                    class="fas fa-trash"></i></button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="product-info">
+                                <img src="https://via.placeholder.com/50/FFFFFF/8B4513?text=L" alt="Lait">
+                                <span>Lait Entier Bio</span>
+                            </div>
+                        </td>
+                        <td><strong>2 L</strong></td>
+                        <td>L</td>
+                        <td><strong>1.20€</strong></td>
+                        <td><span class="badge warning">Stock Bas</span></td>
+                        <td>
+                            <button class="btn-icon tooltip" data-tooltip="Modifier"><i class="fas fa-edit"></i>
+                            </button>
+                            <button class="btn-icon danger tooltip" data-tooltip="Supprimer"><i
+                                    class="fas fa-trash"></i></button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="product-info">
+                                <img src="https://via.placeholder.com/50/D2691E/FFFFFF?text=S" alt="Sucre">
+                                <span>Sucre Blanc</span>
+                            </div>
+                        </td>
+                        <td><strong>5 kg</strong></td>
+                        <td>kg</td>
+                        <td><strong>2.30€</strong></td>
+                        <td><span class="badge success">En Stock</span></td>
+                        <td>
+                            <button class="btn-icon tooltip" data-tooltip="Modifier"><i class="fas fa-edit"></i>
+                            </button>
+                            <button class="btn-icon danger tooltip" data-tooltip="Supprimer"><i
+                                    class="fas fa-trash"></i></button>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Production Page -->
+        <div class="page" id="production-page">
+            <div class="page-header modern-header">
+                <div class="header-content">
+                    <div class="header-title-section">
+                        <div class="header-icon">
+                            <i class="fas fa-cogs"></i>
+                        </div>
+                        <div>
+                            <h2>Gestion de Production</h2>
+                            <p class="header-subtitle">Suivi des performances et efficacité</p>
+                        </div>
+                    </div>
+                    <div class="header-actions">
+                        <button class="btn outline">
+                            <i class="fas fa-download"></i>
+                            Exporter
+                        </button>
+                        <button class="btn primary">
+                            <i class="fas fa-plus"></i>
+                            Nouvelle Production
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="page-overview">
+                <div class="overview-stats">
+                    <div class="overview-stat">
+                        <div class="stat-number">87%</div>
+                        <div class="stat-label">Efficacité Globale</div>
+                    </div>
+                    <div class="overview-stat">
+                        <div class="stat-number">390</div>
+                        <div class="stat-label">Tasses Produites</div>
+                    </div>
+                    <div class="overview-stat">
+                        <div class="stat-number">42s</div>
+                        <div class="stat-label">Temps Moyen</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="production-dashboard">
+                <div class="production-main-card">
+                    <div class="card-header">
+                        <h3><i class="fas fa-chart-bar"></i> Production du Jour</h3>
+                        <div class="card-date">
+                            <i class="fas fa-calendar"></i>
+                            Aujourd'hui
+                        </div>
+                    </div>
+                    <div class="production-chart-container">
+                        <div class="production-items-grid">
+                            <div class="production-item-card">
+                                <div class="item-icon espresso">
+                                    <i class="fas fa-coffee"></i>
+                                </div>
+                                <div class="item-details">
+                                    <h4>Espresso</h4>
+                                    <div class="item-stats">
+                                        <span class="quantity">150 tasses</span>
+                                        <span class="percentage">38%</span>
+                                    </div>
+                                    <div class="progress-bar">
+                                        <div class="progress" style="width: 85%"></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="production-item-card">
+                                <div class="item-icon cappuccino">
+                                    <i class="fas fa-coffee"></i>
+                                </div>
+                                <div class="item-details">
+                                    <h4>Cappuccino</h4>
+                                    <div class="item-stats">
+                                        <span class="quantity">95 tasses</span>
+                                        <span class="percentage">24%</span>
+                                    </div>
+                                    <div class="progress-bar">
+                                        <div class="progress" style="width: 65%"></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="production-item-card">
+                                <div class="item-icon latte">
+                                    <i class="fas fa-coffee"></i>
+                                </div>
+                                <div class="item-details">
+                                    <h4>Latte</h4>
+                                    <div class="item-stats">
+                                        <span class="quantity">80 tasses</span>
+                                        <span class="percentage">21%</span>
+                                    </div>
+                                    <div class="progress-bar">
+                                        <div class="progress" style="width: 55%"></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="production-item-card">
+                                <div class="item-icon americano">
+                                    <i class="fas fa-coffee"></i>
+                                </div>
+                                <div class="item-details">
+                                    <h4>Americano</h4>
+                                    <div class="item-stats">
+                                        <span class="quantity">65 tasses</span>
+                                        <span class="percentage">17%</span>
+                                    </div>
+                                    <div class="progress-bar">
+                                        <div class="progress" style="width: 45%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="production-side-cards">
+                    <div class="efficiency-card">
+                        <div class="card-header">
+                            <h3><i class="fas fa-tachometer-alt"></i> Efficacité</h3>
+                        </div>
+                        <div class="efficiency-display">
+                            <div class="circular-progress">
+                                <div class="circle">
+                                    <div class="fill"></div>
+                                    <div class="progress-text">87%</div>
+                                </div>
+                            </div>
+                            <p class="efficiency-status">Excellente performance</p>
+                        </div>
+                    </div>
+
+                    <div class="time-analysis-card">
+                        <div class="card-header">
+                            <h3><i class="fas fa-clock"></i> Temps de Préparation</h3>
+                        </div>
+                        <div class="time-stats">
+                            <div class="time-item">
+                                <span class="drink-name">Espresso</span>
+                                <span class="time-value">25s</span>
+                            </div>
+                            <div class="time-item">
+                                <span class="drink-name">Cappuccino</span>
+                                <span class="time-value">45s</span>
+                            </div>
+                            <div class="time-item">
+                                <span class="drink-name">Latte</span>
+                                <span class="time-value">50s</span>
+                            </div>
+                            <div class="time-item">
+                                <span class="drink-name">Americano</span>
+                                <span class="time-value">35s</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Finances Page -->
+        <div class="page" id="finances-page">
+            <div class="page-header modern-header">
+                <div class="header-content">
+                    <div class="header-title-section">
+                        <div class="header-icon">
+                            <i class="fas fa-euro-sign"></i>
+                        </div>
+                        <div>
+                            <h2>Gestion Financière</h2>
+                            <p class="header-subtitle">Analyse des revenus et dépenses</p>
+                        </div>
+                    </div>
+                    <div class="header-actions">
+                        <div class="date-range-picker">
+                            <input type="date" class="form-input compact">
+                            <span class="date-separator">à</span>
+                            <input type="date" class="form-input compact">
+                            <button class="btn outline">Filtrer</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="financial-overview">
+                <div class="finance-summary-cards">
+                    <div class="finance-summary-card revenue">
+                        <div class="summary-icon">
+                            <i class="fas fa-arrow-trend-up"></i>
+                        </div>
+                        <div class="summary-content">
+                            <h3>Revenus Totaux</h3>
+                            <div class="amount-display">
+                                <span class="amount">8,420€</span>
+                                <span class="growth positive">+12.5%</span>
+                            </div>
+                            <p class="period">Ce mois</p>
+                        </div>
+                    </div>
+
+                    <div class="finance-summary-card expenses">
+                        <div class="summary-icon">
+                            <i class="fas fa-arrow-trend-down"></i>
+                        </div>
+                        <div class="summary-content">
+                            <h3>Dépenses Totales</h3>
+                            <div class="amount-display">
+                                <span class="amount">2,150€</span>
+                                <span class="growth negative">-3.2%</span>
+                            </div>
+                            <p class="period">Ce mois</p>
+                        </div>
+                    </div>
+
+                    <div class="finance-summary-card profit">
+                        <div class="summary-icon">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <div class="summary-content">
+                            <h3>Bénéfices Nets</h3>
+                            <div class="amount-display">
+                                <span class="amount">6,270€</span>
+                                <span class="growth positive">+18.7%</span>
+                            </div>
+                            <p class="period">Ce mois</p>
+                        </div>
+                    </div>
+
+                    <div class="finance-summary-card margin">
+                        <div class="summary-icon">
+                            <i class="fas fa-percentage"></i>
+                        </div>
+                        <div class="summary-content">
+                            <h3>Marge Bénéficiaire</h3>
+                            <div class="amount-display">
+                                <span class="amount">74.5%</span>
+                                <span class="growth positive">+2.3%</span>
+                            </div>
+                            <p class="period">Ce mois</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="financial-details">
+                <div class="finance-chart-card">
+                    <div class="card-header">
+                        <h3><i class="fas fa-chart-area"></i> Évolution Financière</h3>
+                        <div class="chart-controls">
+                            <button class="btn-tab active">7j</button>
+                            <button class="btn-tab">30j</button>
+                            <button class="btn-tab">3m</button>
+                        </div>
+                    </div>
+                    <div class="chart-placeholder">
+                        <i class="fas fa-chart-line chart-icon"></i>
+                        <p>Graphique des tendances financières</p>
+                    </div>
+                </div>
+
+                <div class="expense-breakdown-card">
+                    <div class="card-header">
+                        <h3><i class="fas fa-pie-chart"></i> Répartition des Dépenses</h3>
+                    </div>
+                    <div class="expense-items">
+                        <div class="expense-item">
+                            <div class="expense-icon ingredients">
+                                <i class="fas fa-leaf"></i>
+                            </div>
+                            <div class="expense-details">
+                                <span class="expense-name">Ingrédients</span>
+                                <span class="expense-amount">1,250€</span>
+                            </div>
+                            <div class="expense-percentage">58%</div>
+                        </div>
+
+                        <div class="expense-item">
+                            <div class="expense-icon salaries">
+                                <i class="fas fa-users"></i>
+                            </div>
+                            <div class="expense-details">
+                                <span class="expense-name">Salaires</span>
+                                <span class="expense-amount">650€</span>
+                            </div>
+                            <div class="expense-percentage">30%</div>
+                        </div>
+
+                        <div class="expense-item">
+                            <div class="expense-icon utilities">
+                                <i class="fas fa-bolt"></i>
+                            </div>
+                            <div class="expense-details">
+                                <span class="expense-name">Charges</span>
+                                <span class="expense-amount">150€</span>
+                            </div>
+                            <div class="expense-percentage">7%</div>
+                        </div>
+
+                        <div class="expense-item">
+                            <div class="expense-icon other">
+                                <i class="fas fa-ellipsis-h"></i>
+                            </div>
+                            <div class="expense-details">
+                                <span class="expense-name">Autres</span>
+                                <span class="expense-amount">100€</span>
+                            </div>
+                            <div class="expense-percentage">5%</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Orders Page -->
+        <div class="page" id="orders-page">
+            <div class="page-header modern-header">
+                <div class="header-content">
+                    <div class="header-title-section">
+                        <div class="header-icon">
+                            <i class="fas fa-shopping-cart"></i>
+                        </div>
+                        <div>
+                            <h2>Gestion des Commandes</h2>
+                            <p class="header-subtitle">Suivi des commandes en temps réel</p>
+                        </div>
+                    </div>
+                    <div class="header-actions">
+                        <div class="search-filters">
+                            <div class="search-input">
+                                <i class="fas fa-search"></i>
+                                <input type="text" placeholder="Rechercher une commande...">
+                            </div>
+                            <select class="form-select">
+                                <option>Tous les statuts</option>
+                                <option>En attente</option>
+                                <option>En cours</option>
+                                <option>Terminée</option>
+                            </select>
+                        </div>
+                        <button class="btn primary">
+                            <i class="fas fa-plus"></i>
+                            Nouvelle Commande
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="orders-stats">
+                <div class="order-stat-card">
+                    <div class="stat-icon pending">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <div class="stat-content">
+                        <span class="stat-number">8</span>
+                        <span class="stat-label">En Attente</span>
+                    </div>
+                </div>
+                <div class="order-stat-card">
+                    <div class="stat-icon processing">
+                        <i class="fas fa-cog fa-spin"></i>
+                    </div>
+                    <div class="stat-content">
+                        <span class="stat-number">3</span>
+                        <span class="stat-label">En Cours</span>
+                    </div>
+                </div>
+                <div class="order-stat-card">
+                    <div class="stat-icon completed">
+                        <i class="fas fa-check"></i>
+                    </div>
+                    <div class="stat-content">
+                        <span class="stat-number">142</span>
+                        <span class="stat-label">Terminées</span>
+                    </div>
+                </div>
+                <div class="order-stat-card">
+                    <div class="stat-icon revenue">
+                        <i class="fas fa-euro-sign"></i>
+                    </div>
+                    <div class="stat-content">
+                        <span class="stat-number">1,250€</span>
+                        <span class="stat-label">Aujourd'hui</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="orders-container">
+                <div class="order-card priority">
+                    <div class="order-status-badge urgent">Urgent</div>
+                    <div class="order-header">
+                        <div class="order-id">
+                            <i class="fas fa-hashtag"></i>
+                            <span>CMD001</span>
+                        </div>
+                        <div class="order-time">
+                            <i class="fas fa-clock"></i>
+                            <span>14:30</span>
+                        </div>
+                    </div>
+                    <div class="order-customer">
+                        <div class="customer-avatar">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <div class="customer-info">
+                            <h4>Jean Dupont</h4>
+                            <span class="customer-type">Client VIP</span>
+                        </div>
+                    </div>
+                    <div class="order-items">
+                        <div class="order-item">
+                            <span class="item-name">2x Espresso</span>
+                            <span class="item-price">6.00€</span>
+                        </div>
+                        <div class="order-item">
+                            <span class="item-name">1x Croissant</span>
+                            <span class="item-price">2.50€</span>
+                        </div>
+                    </div>
+                    <div class="order-footer">
+                        <div class="order-total">
+                            <span class="total-label">Total:</span>
+                            <span class="total-amount">8.50€</span>
+                        </div>
+                        <div class="order-actions">
+                            <button class="btn success small">
+                                <i class="fas fa-check"></i>
+                                Terminer
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="order-card">
+                    <div class="order-status-badge processing">En Cours</div>
+                    <div class="order-header">
+                        <div class="order-id">
+                            <i class="fas fa-hashtag"></i>
+                            <span>CMD002</span>
+                        </div>
+                        <div class="order-time">
+                            <i class="fas fa-clock"></i>
+                            <span>15:15</span>
+                        </div>
+                    </div>
+                    <div class="order-customer">
+                        <div class="customer-avatar">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <div class="customer-info">
+                            <h4>Marie Martin</h4>
+                            <span class="customer-type">Client Régulier</span>
+                        </div>
+                    </div>
+                    <div class="order-items">
+                        <div class="order-item">
+                            <span class="item-name">1x Cappuccino</span>
+                            <span class="item-price">4.50€</span>
+                        </div>
+                        <div class="order-item">
+                            <span class="item-name">1x Muffin Myrtilles</span>
+                            <span class="item-price">3.20€</span>
+                        </div>
+                    </div>
+                    <div class="order-footer">
+                        <div class="order-total">
+                            <span class="total-label">Total:</span>
+                            <span class="total-amount">7.70€</span>
+                        </div>
+                        <div class="order-actions">
+                            <button class="btn warning small">
+                                <i class="fas fa-pause"></i>
+                                Pause
+                            </button>
+                            <button class="btn success small">
+                                <i class="fas fa-check"></i>
+                                Terminer
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="order-card completed">
+                    <div class="order-status-badge completed">Terminée</div>
+                    <div class="order-header">
+                        <div class="order-id">
+                            <i class="fas fa-hashtag"></i>
+                            <span>CMD003</span>
+                        </div>
+                        <div class="order-time">
+                            <i class="fas fa-clock"></i>
+                            <span>13:45</span>
+                        </div>
+                    </div>
+                    <div class="order-customer">
+                        <div class="customer-avatar">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <div class="customer-info">
+                            <h4>Paul Durand</h4>
+                            <span class="customer-type">Nouveau Client</span>
+                        </div>
+                    </div>
+                    <div class="order-items">
+                        <div class="order-item">
+                            <span class="item-name">1x Latte</span>
+                            <span class="item-price">4.80€</span>
+                        </div>
+                    </div>
+                    <div class="order-footer">
+                        <div class="order-total">
+                            <span class="total-label">Total:</span>
+                            <span class="total-amount">4.80€</span>
+                        </div>
+                        <div class="order-actions">
+                            <button class="btn outline small">
+                                <i class="fas fa-receipt"></i>
+                                Reçu
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Customers Page -->
+        <div class="page" id="customers-page">
+            <div class="page-header modern-header">
+                <div class="header-content">
+                    <div class="header-title-section">
+                        <div class="header-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div>
+                            <h2>Gestion des Clients</h2>
+                            <p class="header-subtitle">Base de données clientèle</p>
+                        </div>
+                    </div>
+                    <div class="header-actions">
+                        <div class="search-filters">
+                            <div class="search-input">
+                                <i class="fas fa-search"></i>
+                                <input type="text" placeholder="Rechercher un client...">
+                            </div>
+                            <select class="form-select">
+                                <option>Tous les clients</option>
+                                <option>Clients VIP</option>
+                                <option>Clients Réguliers</option>
+                                <option>Nouveaux Clients</option>
+                            </select>
+                        </div>
+                        <button class="btn primary">
+                            <i class="fas fa-user-plus"></i>
+                            Nouveau Client
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="customers-stats">
+                <div class="customer-stat-card">
+                    <div class="stat-icon total">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div class="stat-content">
+                        <span class="stat-number">1,420</span>
+                        <span class="stat-label">Total Clients</span>
+                    </div>
+                </div>
+                <div class="customer-stat-card">
+                    <div class="stat-icon vip">
+                        <i class="fas fa-crown"></i>
+                    </div>
+                    <div class="stat-content">
+                        <span class="stat-number">89</span>
+                        <span class="stat-label">Clients VIP</span>
+                    </div>
+                </div>
+                <div class="customer-stat-card">
+                    <div class="stat-icon new">
+                        <i class="fas fa-user-plus"></i>
+                    </div>
+                    <div class="stat-content">
+                        <span class="stat-number">23</span>
+                        <span class="stat-label">Ce Mois</span>
+                    </div>
+                </div>
+                <div class="customer-stat-card">
+                    <div class="stat-icon active">
+                        <i class="fas fa-heart"></i>
+                    </div>
+                    <div class="stat-content">
+                        <span class="stat-number">95%</span>
+                        <span class="stat-label">Satisfaction</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="customers-grid">
+                <div class="customer-card vip">
+                    <div class="customer-badge vip">
+                        <i class="fas fa-crown"></i>
+                        VIP
+                    </div>
+                    <div class="customer-avatar">
+                        <img src="https://via.placeholder.com/80/8B4513/FFFFFF?text=MM" alt="Marie Martin">
+                    </div>
+                    <div class="customer-info">
+                        <h4>Marie Martin</h4>
+                        <p class="customer-since">Cliente depuis 2 ans</p>
+                    </div>
+                    <div class="customer-stats">
+                        <div class="customer-stat">
+                            <span class="stat-value">147</span>
+                            <span class="stat-label">Commandes</span>
+                        </div>
+                        <div class="customer-stat">
+                            <span class="stat-value">890€</span>
+                            <span class="stat-label">Dépensé</span>
+                        </div>
+                    </div>
+                    <div class="customer-contact">
+                        <div class="contact-item">
+                            <i class="fas fa-envelope"></i>
+                            <span>marie.martin@email.com</span>
+                        </div>
+                        <div class="contact-item">
+                            <i class="fas fa-phone"></i>
+                            <span>+33 1 23 45 67 89</span>
+                        </div>
+                    </div>
+                    <div class="customer-actions">
+                        <button class="btn outline small">
+                            <i class="fas fa-eye"></i>
+                            Voir Profil
+                        </button>
+                        <button class="btn primary small">
+                            <i class="fas fa-plus"></i>
+                            Commande
+                        </button>
+                    </div>
+                </div>
+
+                <div class="customer-card regular">
+                    <div class="customer-badge regular">
+                        <i class="fas fa-star"></i>
+                        Régulier
+                    </div>
+                    <div class="customer-avatar">
+                        <img src="https://via.placeholder.com/80/D2691E/FFFFFF?text=JD" alt="Jean Dupont">
+                    </div>
+                    <div class="customer-info">
+                        <h4>Jean Dupont</h4>
+                        <p class="customer-since">Client depuis 6 mois</p>
+                    </div>
+                    <div class="customer-stats">
+                        <div class="customer-stat">
+                            <span class="stat-value">23</span>
+                            <span class="stat-label">Commandes</span>
+                        </div>
+                        <div class="customer-stat">
+                            <span class="stat-value">185€</span>
+                            <span class="stat-label">Dépensé</span>
+                        </div>
+                    </div>
+                    <div class="customer-contact">
+                        <div class="contact-item">
+                            <i class="fas fa-envelope"></i>
+                            <span>jean.dupont@email.com</span>
+                        </div>
+                        <div class="contact-item">
+                            <i class="fas fa-phone"></i>
+                            <span>+33 1 98 76 54 32</span>
+                        </div>
+                    </div>
+                    <div class="customer-actions">
+                        <button class="btn outline small">
+                            <i class="fas fa-eye"></i>
+                            Voir Profil
+                        </button>
+                        <button class="btn primary small">
+                            <i class="fas fa-plus"></i>
+                            Commande
+                        </button>
+                    </div>
+                </div>
+
+                <div class="customer-card new">
+                    <div class="customer-badge new">
+                        <i class="fas fa-user-plus"></i>
+                        Nouveau
+                    </div>
+                    <div class="customer-avatar">
+                        <img src="https://via.placeholder.com/80/28a745/FFFFFF?text=AS" alt="Alice Sharma">
+                    </div>
+                    <div class="customer-info">
+                        <h4>Alice Sharma</h4>
+                        <p class="customer-since">Cliente depuis 1 semaine</p>
+                    </div>
+                    <div class="customer-stats">
+                        <div class="customer-stat">
+                            <span class="stat-value">3</span>
+                            <span class="stat-label">Commandes</span>
+                        </div>
+                        <div class="customer-stat">
+                            <span class="stat-value">24€</span>
+                            <span class="stat-label">Dépensé</span>
+                        </div>
+                    </div>
+                    <div class="customer-contact">
+                        <div class="contact-item">
+                            <i class="fas fa-envelope"></i>
+                            <span>alice.sharma@email.com</span>
+                        </div>
+                        <div class="contact-item">
+                            <i class="fas fa-phone"></i>
+                            <span>+33 1 55 44 33 22</span>
+                        </div>
+                    </div>
+                    <div class="customer-actions">
+                        <button class="btn outline small">
+                            <i class="fas fa-eye"></i>
+                            Voir Profil
+                        </button>
+                        <button class="btn primary small">
+                            <i class="fas fa-plus"></i>
+                            Commande
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Reports Page -->
+        <div class="page" id="reports-page">
+            <div class="page-header modern-header">
+                <div class="header-content">
+                    <div class="header-title-section">
+                        <div class="header-icon">
+                            <i class="fas fa-file-alt"></i>
+                        </div>
+                        <div>
+                            <h2>Rapports & Analyses</h2>
+                            <p class="header-subtitle">Tableaux de bord et exports</p>
+                        </div>
+                    </div>
+                    <div class="header-actions">
+                        <button class="btn outline">
+                            <i class="fas fa-calendar"></i>
+                            Planifier
+                        </button>
+                        <button class="btn primary">
+                            <i class="fas fa-download"></i>
+                            Exporter Tout
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="reports-quick-stats">
+                <div class="quick-stat">
+                    <i class="fas fa-chart-line"></i>
+                    <div class="stat-info">
+                        <span class="stat-number">+15%</span>
+                        <span class="stat-label">Croissance</span>
+                    </div>
+                </div>
+                <div class="quick-stat">
+                    <i class="fas fa-file-pdf"></i>
+                    <div class="stat-info">
+                        <span class="stat-number">24</span>
+                        <span class="stat-label">Rapports</span>
+                    </div>
+                </div>
+                <div class="quick-stat">
+                    <i class="fas fa-clock"></i>
+                    <div class="stat-info">
+                        <span class="stat-number">Auto</span>
+                        <span class="stat-label">Génération</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="reports-grid">
+                <div class="report-card featured">
+                    <div class="report-icon">
+                        <i class="fas fa-chart-bar"></i>
+                    </div>
+                    <div class="report-content">
+                        <h3>Rapport Mensuel Complet</h3>
+                        <p>Analyse complète des ventes, performances et tendances du mois en cours avec comparatifs.</p>
+                        <div class="report-meta">
+                                <span class="report-size">
+                                    <i class="fas fa-file"></i>
+                                    ~2.4 MB
+                                </span>
+                            <span class="report-pages">
+                                    <i class="fas fa-layer-group"></i>
+                                    12 pages
+                                </span>
+                        </div>
+                    </div>
+                    <div class="report-actions">
+                        <button class="btn outline">
+                            <i class="fas fa-eye"></i>
+                            Aperçu
+                        </button>
+                        <button class="btn primary">
+                            <i class="fas fa-download"></i>
+                            Générer
+                        </button>
+                    </div>
+                </div>
+
+                <div class="report-card">
+                    <div class="report-icon">
+                        <i class="fas fa-boxes"></i>
+                    </div>
+                    <div class="report-content">
+                        <h3>Rapport de Stock Détaillé</h3>
+                        <p>État complet des stocks, produits en rupture, prévisions et recommandations de commande.</p>
+                        <div class="report-meta">
+                                <span class="report-size">
+                                    <i class="fas fa-file"></i>
+                                    ~1.8 MB
+                                </span>
+                            <span class="report-pages">
+                                    <i class="fas fa-layer-group"></i>
+                                    8 pages
+                                </span>
+                        </div>
+                    </div>
+                    <div class="report-actions">
+                        <button class="btn outline">
+                            <i class="fas fa-eye"></i>
+                            Aperçu
+                        </button>
+                        <button class="btn success">
+                            <i class="fas fa-download"></i>
+                            Générer
+                        </button>
+                    </div>
+                </div>
+
+                <div class="report-card">
+                    <div class="report-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div class="report-content">
+                        <h3>Analyse Clientèle Avancée</h3>
+                        <p>Segmentation client, analyse de fidélité, comportements d'achat et opportunités de
+                            croissance.</p>
+                        <div class="report-meta">
+                                <span class="report-size">
+                                    <i class="fas fa-file"></i>
+                                    ~3.1 MB
+                                </span>
+                            <span class="report-pages">
+                                    <i class="fas fa-layer-group"></i>
+                                    15 pages
+                                </span>
+                        </div>
+                    </div>
+                    <div class="report-actions">
+                        <button class="btn outline">
+                            <i class="fas fa-eye"></i>
+                            Aperçu
+                        </button>
+                        <button class="btn info">
+                            <i class="fas fa-download"></i>
+                            Générer
+                        </button>
+                    </div>
+                </div>
+
+                <div class="report-card">
+                    <div class="report-icon">
+                        <i class="fas fa-euro-sign"></i>
+                    </div>
+                    <div class="report-content">
+                        <h3>Bilan Financier Trimestriel</h3>
+                        <p>Analyse financière complète, ratios de rentabilité, prévisions et recommandations
+                            stratégiques.</p>
+                        <div class="report-meta">
+                                <span class="report-size">
+                                    <i class="fas fa-file"></i>
+                                    ~4.2 MB
+                                </span>
+                            <span class="report-pages">
+                                    <i class="fas fa-layer-group"></i>
+                                    20 pages
+                                </span>
+                        </div>
+                    </div>
+                    <div class="report-actions">
+                        <button class="btn outline">
+                            <i class="fas fa-eye"></i>
+                            Aperçu
+                        </button>
+                        <button class="btn warning">
+                            <i class="fas fa-download"></i>
+                            Générer
+                        </button>
+                    </div>
+                </div>
+
+                <div class="report-card">
+                    <div class="report-icon">
+                        <i class="fas fa-cogs"></i>
+                    </div>
+                    <div class="report-content">
+                        <h3>Performance Opérationnelle</h3>
+                        <p>Efficacité de production, temps de service, qualité et optimisations suggérées.</p>
+                        <div class="report-meta">
+                                <span class="report-size">
+                                    <i class="fas fa-file"></i>
+                                    ~2.7 MB
+                                </span>
+                            <span class="report-pages">
+                                    <i class="fas fa-layer-group"></i>
+                                    10 pages
+                                </span>
+                        </div>
+                    </div>
+                    <div class="report-actions">
+                        <button class="btn outline">
+                            <i class="fas fa-eye"></i>
+                            Aperçu
+                        </button>
+                        <button class="btn secondary">
+                            <i class="fas fa-download"></i>
+                            Générer
+                        </button>
+                    </div>
+                </div>
+
+                <div class="report-card">
+                    <div class="report-icon">
+                        <i class="fas fa-chart-pie"></i>
+                    </div>
+                    <div class="report-content">
+                        <h3>Rapport Personnalisé</h3>
+                        <p>Créez votre propre rapport avec les métriques et analyses de votre choix.</p>
+                        <div class="report-meta">
+                                <span class="report-size">
+                                    <i class="fas fa-file"></i>
+                                    Variable
+                                </span>
+                            <span class="report-pages">
+                                    <i class="fas fa-layer-group"></i>
+                                    À définir
+                                </span>
+                        </div>
+                    </div>
+                    <div class="report-actions">
+                        <button class="btn primary">
+                            <i class="fas fa-magic"></i>
+                            Créer
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Elements Page -->
+        <div class="page" id="elements-page">
+            <div class="page-header">
+                <h2><i class="fas fa-palette"></i> Éléments d'Interface</h2>
+                <button class="btn primary">
+                    <i class="fas fa-code"></i>
+                    Voir Code
+                </button>
+            </div>
+
+            <div class="elements-grid">
+                <!-- Buttons Section -->
+                <div class="element-section">
+                    <h3>Boutons</h3>
+                    <div class="button-showcase">
+                        <button class="btn primary">Primary</button>
+                        <button class="btn secondary">Secondary</button>
+                        <button class="btn success">Success</button>
+                        <button class="btn warning">Warning</button>
+                        <button class="btn danger">Danger</button>
+                        <button class="btn outline">Outline</button>
+                        <button class="btn primary" disabled>Disabled</button>
+                    </div>
+
+                    <h4>Boutons avec Icônes</h4>
+                    <div class="button-showcase">
+                        <button class="btn primary">
+                            <i class="fas fa-plus"></i>
+                            Ajouter
+                        </button>
+                        <button class="btn success">
+                            <i class="fas fa-check"></i>
+                            Valider
+                        </button>
+                        <button class="btn danger">
+                            <i class="fas fa-trash"></i>
+                            Supprimer
+                        </button>
+                        <button class="btn outline">
+                            <i class="fas fa-download"></i>
+                            Télécharger
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Cards Section -->
+                <div class="element-section">
+                    <h3>Cartes</h3>
+                    <div class="card-showcase">
+                        <div class="showcase-card">
+                            <h4>Carte Simple</h4>
+                            <p>Contenu de la carte avec du texte descriptif et des éléments visuels.</p>
+                            <button class="btn outline">Action</button>
+                        </div>
+
+                        <div class="showcase-card highlight">
+                            <h4>Carte Mise en Valeur</h4>
+                            <p>Cette carte est mise en évidence avec une bordure colorée.</p>
+                            <div class="badge primary">Nouveau</div>
+                        </div>
+
+                        <div class="showcase-card">
+                            <h4>Carte avec Statistiques</h4>
+                            <div style="display: flex; justify-content: space-between; margin: 1rem 0;">
+                                <div style="text-align: center;">
+                                    <strong>125</strong>
+                                    <p>Ventes</p>
+                                </div>
+                                <div style="text-align: center;">
+                                    <strong>89%</strong>
+                                    <p>Satisfaction</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Badges Section -->
+                <div class="element-section">
+                    <h3>Badges</h3>
+                    <div class="badge-showcase">
+                        <span class="badge primary">Primary</span>
+                        <span class="badge success">Success</span>
+                        <span class="badge warning">Warning</span>
+                        <span class="badge danger">Danger</span>
+                        <span class="badge info">Info</span>
+                    </div>
+                </div>
+
+                <!-- Forms Section -->
+                <div class="element-section">
+                    <h3>Formulaires</h3>
+                    <div class="form-showcase">
+                        <div class="form-group">
+                            <label class="form-label">Input Standard</label>
+                            <input type="text" class="form-input" placeholder="Saisir du texte...">
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Input Email</label>
+                            <input type="email" class="form-input" placeholder="exemple@email.com">
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Input Mot de Passe</label>
+                            <input type="password" class="form-input" placeholder="••••••••">
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Input Numérique</label>
+                            <input type="number" class="form-input" placeholder="123" min="0">
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Input Date</label>
+                            <input type="date" class="form-input">
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Select</label>
+                            <select class="form-select">
+                                <option>Choisir une option...</option>
+                                <option>Option 1</option>
+                                <option>Option 2</option>
+                                <option>Option 3</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Textarea</label>
+                            <textarea class="form-textarea" rows="4" placeholder="Votre message..."></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+                                <input type="checkbox" style="margin: 0;">
+                                <span>Case à cocher</span>
+                            </label>
+                        </div>
+
+                        <div class="form-group">
+                            <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+                                <input type="radio" name="radio-example" style="margin: 0;">
+                                <span>Option Radio 1</span>
+                            </label>
+                            <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+                                <input type="radio" name="radio-example" style="margin: 0;">
+                                <span>Option Radio 2</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Alerts Section -->
+                <div class="element-section">
+                    <h3>Alertes</h3>
+                    <div class="alert success">
+                        <i class="fas fa-check-circle"></i>
+                        <div>
+                            <strong>Succès!</strong> Votre action a été réalisée avec succès.
+                        </div>
+                    </div>
+
+                    <div class="alert warning">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <div>
+                            <strong>Attention!</strong> Vérifiez les informations saisies.
+                        </div>
+                    </div>
+
+                    <div class="alert danger">
+                        <i class="fas fa-times-circle"></i>
+                        <div>
+                            <strong>Erreur!</strong> Une erreur s'est produite lors du traitement.
+                        </div>
+                    </div>
+
+                    <div class="alert info">
+                        <i class="fas fa-info-circle"></i>
+                        <div>
+                            <strong>Information:</strong> Voici une information importante à retenir.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Progress Bars Section -->
+                <div class="element-section">
+                    <h3>Barres de Progression</h3>
+                    <div class="progress-container">
+                        <div class="progress-label">
+                            <span>Progression générale</span>
+                            <span>75%</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress" style="width: 75%"></div>
+                        </div>
+                    </div>
+
+                    <div class="progress-container">
+                        <div class="progress-label">
+                            <span>Téléchargement</span>
+                            <span>45%</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress" style="width: 45%; background: var(--gradient-success);"></div>
+                        </div>
+                    </div>
+
+                    <div class="progress-container">
+                        <div class="progress-label">
+                            <span>Installation</span>
+                            <span>90%</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress" style="width: 90%; background: var(--gradient-warning);"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tabs Section -->
+                <div class="element-section">
+                    <h3>Onglets</h3>
+                    <div class="tabs">
+                        <div class="tab-nav">
+                            <button class="tab-btn active">Général</button>
+                            <button class="tab-btn">Paramètres</button>
+                            <button class="tab-btn">Sécurité</button>
+                            <button class="tab-btn">Avancé</button>
+                        </div>
+                    </div>
+                    <div style="padding: 2rem; background: rgba(255,255,255,0.5); border-radius: var(--border-radius); margin-top: 1rem;">
+                        <h4>Contenu de l'onglet Général</h4>
+                        <p>Ici se trouve le contenu de l'onglet sélectionné avec toutes les options et paramètres
+                            disponibles.</p>
+                    </div>
+                </div>
+
+                <!-- Tables Section -->
+                <div class="element-section">
+                    <h3>Tableaux</h3>
+                    <div class="table-container">
+                        <table class="data-table">
+                            <thead>
+                            <tr>
+                                <th><i class="fas fa-hashtag"></i> ID</th>
+                                <th><i class="fas fa-user"></i> Nom</th>
+                                <th><i class="fas fa-envelope"></i> Email</th>
+                                <th><i class="fas fa-calendar"></i> Date</th>
+                                <th><i class="fas fa-info-circle"></i> Statut</th>
+                                <th><i class="fas fa-cogs"></i> Actions</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td><strong>#001</strong></td>
+                                <td>Jean Dupont</td>
+                                <td>jean.dupont@email.com</td>
+                                <td>15/11/2024</td>
+                                <td><span class="badge success">Actif</span></td>
+                                <td>
+                                    <button class="btn-icon tooltip" data-tooltip="Modifier"><i class="fas fa-edit"></i>
+                                    </button>
+                                    <button class="btn-icon danger tooltip" data-tooltip="Supprimer"><i
+                                            class="fas fa-trash"></i></button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><strong>#002</strong></td>
+                                <td>Marie Martin</td>
+                                <td>marie.martin@email.com</td>
+                                <td>14/11/2024</td>
+                                <td><span class="badge warning">En Attente</span></td>
+                                <td>
+                                    <button class="btn-icon tooltip" data-tooltip="Modifier"><i class="fas fa-edit"></i>
+                                    </button>
+                                    <button class="btn-icon danger tooltip" data-tooltip="Supprimer"><i
+                                            class="fas fa-trash"></i></button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><strong>#003</strong></td>
+                                <td>Paul Durand</td>
+                                <td>paul.durand@email.com</td>
+                                <td>13/11/2024</td>
+                                <td><span class="badge danger">Inactif</span></td>
+                                <td>
+                                    <button class="btn-icon tooltip" data-tooltip="Modifier"><i class="fas fa-edit"></i>
+                                    </button>
+                                    <button class="btn-icon danger tooltip" data-tooltip="Supprimer"><i
+                                            class="fas fa-trash"></i></button>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Lists Section -->
+                <div class="element-section">
+                    <h3>Listes</h3>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem;">
+                        <div>
+                            <h4>Liste Simple</h4>
+                            <ul style="list-style: none; padding: 0;">
+                                <li style="padding: 0.75rem; border-bottom: 1px solid var(--gray-200); display: flex; align-items: center; gap: 0.75rem;">
+                                    <i class="fas fa-check text-success"></i>
+                                    <span>Premier élément de la liste</span>
+                                </li>
+                                <li style="padding: 0.75rem; border-bottom: 1px solid var(--gray-200); display: flex; align-items: center; gap: 0.75rem;">
+                                    <i class="fas fa-check text-success"></i>
+                                    <span>Deuxième élément</span>
+                                </li>
+                                <li style="padding: 0.75rem; border-bottom: 1px solid var(--gray-200); display: flex; align-items: center; gap: 0.75rem;">
+                                    <i class="fas fa-times text-danger"></i>
+                                    <span>Troisième élément</span>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div>
+                            <h4>Liste avec Avatars</h4>
+                            <ul style="list-style: none; padding: 0;">
+                                <li style="padding: 1rem; border-bottom: 1px solid var(--gray-200); display: flex; align-items: center; gap: 1rem;">
+                                    <img src="https://via.placeholder.com/40/8B4513/FFFFFF?text=JD" alt="User"
+                                         style="width: 40px; height: 40px; border-radius: 50%;">
+                                    <div>
+                                        <strong>Jean Dupont</strong>
+                                        <p style="margin: 0; color: var(--gray-600); font-size: 0.9rem;">
+                                            Administrateur</p>
+                                    </div>
+                                </li>
+                                <li style="padding: 1rem; border-bottom: 1px solid var(--gray-200); display: flex; align-items: center; gap: 1rem;">
+                                    <img src="https://via.placeholder.com/40/D2691E/FFFFFF?text=MM" alt="User"
+                                         style="width: 40px; height: 40px; border-radius: 50%;">
+                                    <div>
+                                        <strong>Marie Martin</strong>
+                                        <p style="margin: 0; color: var(--gray-600); font-size: 0.9rem;">
+                                            Utilisatrice</p>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tooltips & Dividers Section -->
+                <div class="element-section">
+                    <h3>Éléments Divers</h3>
+                    <div style="display: flex; flex-wrap: wrap; gap: 2rem; align-items: center;">
+                        <button class="btn primary tooltip" data-tooltip="Ceci est un tooltip informatif">
+                            Survole-moi
+                        </button>
+                        <button class="btn success tooltip" data-tooltip="Action de validation">
+                            <i class="fas fa-check"></i>
+                            Valider
+                        </button>
+                    </div>
+
+                    <hr style="margin: 2rem 0; border: none; height: 2px; background: var(--gradient-primary); border-radius: 1px;">
+
+                    <div style="display: flex; gap: 1rem; align-items: center;">
+                        <div style="width: 12px; height: 12px; background: var(--success-color); border-radius: 50%;"></div>
+                        <span>Statut en ligne</span>
+                    </div>
+
+                    <div style="display: flex; gap: 1rem; align-items: center; margin-top: 0.5rem;">
+                        <div style="width: 12px; height: 12px; background: var(--warning-color); border-radius: 50%;"></div>
+                        <span>Statut occupé</span>
+                    </div>
+
+                    <div style="display: flex; gap: 1rem; align-items: center; margin-top: 0.5rem;">
+                        <div style="width: 12px; height: 12px; background: var(--gray-400); border-radius: 50%;"></div>
+                        <span>Statut hors ligne</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

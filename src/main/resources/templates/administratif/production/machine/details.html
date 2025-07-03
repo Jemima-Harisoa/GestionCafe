@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Détails Machine</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/templates/styles.css}">
+</head>
+<body>
+<div th:replace="~{administratif/production/layout/sidebar :: sidebar}"></div>
+<div class="main-content" id="mainContent">
+    <div th:replace="~{administratif/production/layout/header :: header('Machines')}"/>
+    <main class="content">
+        <div class="page-header modern-header">
+            <div class="header-content">
+                <div class="header-title-section">
+                    <div class="header-icon">
+                        <i class="fas fa-cogs"></i>
+                    </div>
+                    <div>
+                        <h2 th:text="'Détails de ' + ${machine.nom}">Détails de la machine</h2>
+                        <p class="header-subtitle">Informations complètes et utilisations</p>
+                    </div>
+                </div>
+                <div class="header-actions">
+                    <a th:href="@{'/machines/edit/' + ${machine.id}}" class="btn primary">
+                        <i class="fas fa-edit"></i> Modifier
+                    </a>
+                    <a th:href="@{/machines}" class="btn outline">
+                        <i class="fas fa-arrow-left"></i> Retour
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="stats-grid" style="margin-bottom: 2rem;">
+            <div class="stat-card primary hover-lift">
+                <div class="stat-icon"><i class="fas fa-tag"></i></div>
+                <div class="stat-info">
+                    <h3>Nom</h3>
+                    <p class="stat-value" th:text="${machine.nom}">-</p>
+                </div>
+            </div>
+            <div class="stat-card info hover-lift">
+                <div class="stat-icon"><i class="fas fa-industry"></i></div>
+                <div class="stat-info">
+                    <h3>Marque</h3>
+                    <p class="stat-value" th:text="${machine.marque}">-</p>
+                </div>
+            </div>
+            <div class="stat-card warning hover-lift">
+                <div class="stat-icon"><i class="fas fa-bolt"></i></div>
+                <div class="stat-info">
+                    <h3>Puissance</h3>
+                    <p class="stat-value" th:text="${machine.puissance}">-</p>
+                </div>
+            </div>
+            <div class="stat-card success hover-lift">
+                <div class="stat-icon"><i class="fas fa-percentage"></i></div>
+                <div class="stat-info">
+                    <h3>Taux d'activité (%)</h3>
+                    <p class="stat-value" th:text="${machine.tauxActivite}">-</p>
+                </div>
+            </div>
+        </div>
+        <div class="table-container" style="margin-top:2rem;">
+            <div style="padding: 1.5rem 2rem; border-bottom: 1px solid rgba(139, 69, 19, 0.1); background: rgba(139, 69, 19, 0.05);">
+                <h3 style="margin: 0; display: flex; align-items: center; gap: 0.75rem;">
+                    <i class="fas fa-cogs"></i>
+                    Utilisations de la machine
+                </h3>
+            </div>
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Produit</th>
+                        <th>Durée</th>
+                        <th>Unité</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="u : ${utilisations}">
+                        <td th:text="${u.produit.nom}"></td>
+                        <td th:text="${u.duree}"></td>
+                        <td th:text="${u.unite.nom}"></td>
+                    </tr>
+                    <tr th:if="${#lists.isEmpty(utilisations)}">
+                        <td colspan="3" style="text-align:center;">Aucune utilisation enregistrée</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </main>
+</div>
+<script th:src="@{/templates/script.js}"></script>
+</body>
+</html>
