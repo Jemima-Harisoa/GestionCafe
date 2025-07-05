@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${unite.id != null} ? 'Modifier une unité' : 'Ajouter une unité'">Unité</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/templates/styles.css}">
+</head>
+<body>
+<div th:replace="~{administratif/production/layout/sidebar :: sidebar}"></div>
+<div class="main-content" id="mainContent">
+    <div th:replace="~{administratif/production/layout/header :: header('Unités')}"></div>
+    <main class="content">
+        <!-- Modern Header -->
+        <div class="page-header modern-header">
+            <div class="header-content">
+                <div class="header-title-section">
+                    <div class="header-icon">
+                        <i th:class="${unite.id == null ? 'fas fa-plus' : 'fas fa-edit'}"></i>
+                    </div>
+                    <div>
+                        <h2 th:text="${unite.id == null ? 'Ajouter' : 'Modifier'} + ' une unité'">
+                            Formulaire unité</h2>
+                        <p class="header-subtitle"
+                           th:text="${unite.id == null ? 'Créer une nouvelle unité de mesure' : 'Modifier les informations existantes'}">
+                            Gestion des unités</p>
+                    </div>
+                </div>
+                <div class="header-actions">
+                    <a th:href="@{/administratif/production/unite}" class="btn outline">
+                        <i class="fas fa-arrow-left"></i>
+                        Retour à la liste
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Form Container -->
+        <div class="chart-card hover-glow" style="max-width: 600px; margin: 0 auto;">
+            <div class="card-header">
+                <h3>
+                    <i th:class="${unite.id == null ? 'fas fa-plus-circle' : 'fas fa-edit'}"></i>
+                    <span th:text="${unite.id == null ? 'Nouvelle unité' : 'Modification'}">Formulaire</span>
+                </h3>
+            </div>
+
+            <form th:action="${unite.id != null} ? @{'/administratif/production/unite/edit/' + ${unite.id}} : @{/administratif/production/unite/new}" 
+                  th:object="${unite}" method="post" style="padding: 2rem;">
+
+                <!-- Nom Field -->
+                <div class="form-group">
+                    <label class="form-label">
+                        <i class="fas fa-tag"></i>
+                        Nom de l'unité
+                    </label>
+                    <input type="text" th:field="*{nom}" class="form-input"
+                           placeholder="Saisir le nom de l'unité (ex: kg, litre, mètre...)"
+                           required/>
+                </div>
+
+                <!-- Catégorie Field -->
+                <div class="form-group">
+                    <label class="form-label">
+                        <i class="fas fa-layer-group"></i>
+                        Catégorie d'unité
+                    </label>
+                    <select th:field="*{categorieUnite.id}" class="form-select" required>
+                        <option value="">Choisir une catégorie...</option>
+                        <option th:each="cat : ${categories}" 
+                                th:value="${cat.id}" 
+                                th:text="${cat.nom} + ' (' + ${cat.norme} + ')'"
+                                th:selected="${unite.categorieUnite != null and cat.id == unite.categorieUnite.id}">
+                        </option>
+                    </select>
+                    <small class="form-help">
+                        <i class="fas fa-info-circle"></i>
+                        La catégorie détermine le type de mesure (masse, volume, longueur, etc.)
+                    </small>
+                </div>
+
+                <!-- Valeur par Norme Field -->
+                <div class="form-group">
+                    <label class="form-label">
+                        <i class="fas fa-calculator"></i>
+                        Valeur par rapport à la norme
+                    </label>
+                    <input type="number" step="0.0000000001" th:field="*{valeurParNorme}" class="form-input"
+                           placeholder="Facteur de conversion (ex: 0.001 pour gramme vers kg)"
+                           required/>
+                    <small class="form-help">
+                        <i class="fas fa-lightbulb"></i>
+                        <strong>Exemples :</strong> 1 = unité de base, 0.001 = gramme vers kg, 1000 = kilomètre vers mètre
+                    </small>
+                </div>
+
+                <!-- Preview Section -->
+                <div class="form-group" style="background: rgba(139, 69, 19, 0.05); padding: 1.5rem; border-radius: var(--border-radius); border-left: 4px solid var(--primary-color);">
+                    <h4 style="margin: 0 0 1rem 0; display: flex; align-items: center; gap: 0.5rem; color: var(--primary-color);">
+                        <i class="fas fa-eye"></i>
+                        Aperçu de la conversion
+                    </h4>
+                    <div id="conversionPreview" style="font-family: monospace; background: white; padding: 1rem; border-radius: 4px; border: 1px solid rgba(139, 69, 19, 0.2);">
+                        <em style="color: var(--gray-500);">Sélectionnez une catégorie et saisissez une valeur pour voir l'aperçu</em>
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div style="display: flex; gap: 1rem; justify-content: flex-end; margin-top: 2rem; padding-top: 1.5rem; border-top: 2px solid rgba(139, 69, 19, 0.1);">
+                    <a th:href="@{/administratif/production/unite}" class="btn outline">
+                        <i class="fas fa-times"></i>
+                        Annuler
+                    </a>
+                    <button type="submit" class="btn primary">
+                        <i th:class="${unite.id == null ? 'fas fa-plus' : 'fas fa-save'}"></i>
+                        <span th:text="${unite.id == null ? 'Créer' : 'Sauvegarder'}">Valider</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Help Section -->
+        <div style="max-width: 600px; margin: 2rem auto 0;">
+            <div class="alert info">
+                <i class="fas fa-info-circle"></i>
+                <div>
+                    <strong>Information :</strong>
+                    <span th:if="${unite.id == null}">
+                        Créez des unités cohérentes pour faciliter les conversions dans votre système de gestion.
+                    </span>
+                    <span th:unless="${unite.id == null}">
+                        Modifiez avec précaution car cela peut affecter les conversions existantes.
+                    </span>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+<script th:src="@{/templates/script.js}"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const nomInput = document.querySelector('input[name="nom"]');
+    const categorieSelect = document.querySelector('select[name="categorieUnite.id"]');
+    const valeurInput = document.querySelector('input[name="valeurParNorme"]');
+    const previewDiv = document.getElementById('conversionPreview');
+
+    function updatePreview() {
+        const nom = nomInput.value.trim();
+        const categorieOption = categorieSelect.selectedOptions[0];
+        const valeur = parseFloat(valeurInput.value);
+
+        if (!nom || !categorieOption || !categorieOption.text || isNaN(valeur)) {
+            previewDiv.innerHTML = '<em style="color: var(--gray-500);">Complétez tous les champs pour voir l\'aperçu</em>';
+            return;
+        }
+
+        const categorieText = categorieOption.text;
+        const norme = categorieText.match(/\(([^)]+)\)/)?.[1] || 'unité de base';
+
+        let preview = `<strong>Unité :</strong> ${nom}<br>`;
+        preview += `<strong>Catégorie :</strong> ${categorieText}<br>`;
+        preview += `<strong>Conversion :</strong> `;
+
+        if (valeur === 1) {
+            preview += `Cette unité EST l'unité de référence (${norme})`;
+        } else if (valeur < 1) {
+            preview += `1 ${nom} = ${valeur} ${norme} (unité plus petite)`;
+        } else {
+            preview += `1 ${nom} = ${valeur} ${norme} (unité plus grande)`;
+        }
+
+        // Exemple pratique
+        preview += `<br><br><strong>Exemple :</strong> `;
+        if (valeur === 1) {
+            preview += `Unité de base pour cette catégorie`;
+        } else {
+            const inverse = 1 / valeur;
+            preview += `${inverse.toFixed(4)} ${nom} = 1 ${norme}`;
+        }
+
+        previewDiv.innerHTML = preview;
+    }
+
+    if (nomInput && categorieSelect && valeurInput && previewDiv) {
+        nomInput.addEventListener('input', updatePreview);
+        categorieSelect.addEventListener('change', updatePreview);
+        valeurInput.addEventListener('input', updatePreview);
+        
+        // Aperçu initial
+        updatePreview();
+    }
+});
+</script>
+</body>
+</html>

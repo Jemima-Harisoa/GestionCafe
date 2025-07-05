@@ -1,0 +1,42 @@
+<div th:fragment="sidebar">
+    <div th:replace="~{fragments/sidebar-base :: sidebarBase(~{::header},~{::content})}">
+        <th:block th:fragment="header">
+            <a th:href="@{/administratif/rh}" class="logo" style="text-decoration:none; color:inherit; display:flex; align-items:center;">
+                <i class="fas fa-user-tie"></i>
+                <span style="margin-left:8px;">RH</span>
+            </a>
+        </th:block>
+        <th:block th:fragment="content">
+            <li class="nav-item">
+                <a th:href="@{/administratif/rh/gestion-employes}"  class="nav-link">
+                    <i class="fas fa-chart-line"></i>
+                    <span>Gestion des employes</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a th:href="@{/administratif/rh/gestion-salaires}"  class="nav-link">
+                    <i class="fas fa-boxes"></i>
+                    <span>Gestion des salaires</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a th:href="@{/administratif/rh/gestion-recrutements}"  class="nav-link">
+                    <i class="fas fa-cogs"></i>
+                    <span>Gestion des recrutements</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a th:href="@{/administratif/rh/gestion-conges}"  class="nav-link">
+                    <i class="fas fa-euro-sign"></i>
+                    <span>Gestion des conges et des jours feries</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a th:href="@{/administratif/rh/parametre}"  class="nav-link">
+                    <i class="fas fa-euro-sign"></i>
+                    <span>Parametrages</span>
+                </a>
+            </li>
+        </th:block>
+    </div>
+</div>

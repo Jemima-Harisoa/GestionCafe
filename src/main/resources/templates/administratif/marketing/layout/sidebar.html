@@ -1,0 +1,24 @@
+<div th:fragment="sidebar">
+    <div th:replace="~{fragments/sidebar-base :: sidebarBase(~{::header},~{::content})}">
+        <th:block th:fragment="header">
+            <a th:href="@{/administratif/marketing}" class="logo" style="text-decoration:none; color:inherit; display:flex; align-items:center;">
+                <i class="fas fa-user-tie"></i>
+                <span style="margin-left:8px;">Marketing</span>
+            </a>
+        </th:block>
+        <th:block th:fragment="content">
+            <li class="nav-item">
+                <a th:href="@{/administratif/marketing/dashboard}"  class="nav-link">
+                    <i class="fas fa-chart-line"></i>
+                    <span>Dashboard</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a th:href="@{/administratif/rh/gestion-salaires}"  class="nav-link">
+                    <i class="fas fa-boxes"></i>
+                    <span></span>
+                </a>
+            </li>
+        </th:block>
+    </div>
+</div>

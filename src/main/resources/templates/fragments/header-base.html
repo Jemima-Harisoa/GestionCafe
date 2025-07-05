@@ -1,0 +1,13 @@
+<header class="header" th:fragment="headerBase(title, rightLinkHref, rightLinkLabel, rightLinkIcon)">
+    <div class="header-left">
+        <button class="mobile-toggle" id="mobileToggle">
+            <i class="fas fa-bars"></i>
+        </button>
+        <h1 th:text="${title}">Titre</h1>
+    </div>
+    <div class="header-right" style="position:absolute; top:0; right:0; padding:16px;">
+        <a th:href="${rightLinkHref}" class="nav-link" style="font-weight:bold; color:#333; text-decoration:none; display:flex; align-items:center; gap:6px;">
+            <i th:class="${rightLinkIcon}"></i> <span th:text="${rightLinkLabel}">Accueil</span>
+        </a>
+    </div>
+</header>

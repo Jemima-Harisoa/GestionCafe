@@ -1,0 +1,188 @@
+/* Custom styles for accueil-administratif page */
+
+/* Make the cards more consistent with proper spacing */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2rem;
+    margin: 2rem 0;
+}
+
+/* Enhance card appearance */
+.stat-card {
+    padding: 2rem 1rem;
+    height: 250px; /* Increased height to accommodate larger content */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    transition: all 0.3s ease;
+    position: relative; /* Ensure position relative for absolute positioning of children */
+}
+
+.stat-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+}
+
+/* Make icons fixed size and preserve their dimensions */
+.stat-card .stat-icon {
+    width: 70px;
+    height: 70px;
+    min-height: 70px; /* Ensures minimum height doesn't collapse */
+    margin-bottom: 1.5rem;
+    flex-shrink: 0; /* Prevent icon from shrinking */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.stat-card .stat-icon i {
+    font-size: 2rem; /* Slightly reduced for better proportions */
+}
+
+/* Style the module titles consistently */
+.stat-info {
+    flex-grow: 1; /* Allow the info section to grow and fill available space */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 100%;
+}
+
+.stat-info h1 {
+    font-size: 1.2rem; /* Slightly smaller font size for better balance */
+    font-weight: 700;
+    margin: 0.5rem 0;
+    letter-spacing: 0.5px;
+    color: var(--dark-color);
+    word-wrap: break-word; /* Ensure long text wraps properly */
+}
+
+/* Force "RESSOURCES HUMAINES" to be on two lines if needed */
+.stat-card .stat-info h1:contains('RESSOURCES HUMAINES') {
+    font-size: 1.1rem;
+    line-height: 1.2;
+}
+
+/* Style the links to cover the entire card */
+.stat-info a {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: inherit;
+    text-decoration: none;
+    width: 100%;
+    height: 100%;
+}
+
+/* Hide the chart icon in favor of cleaner design */
+.stat-info i.fas.fa-chart-line {
+    display: none;
+}
+
+/* Add a subtle effect on hover */
+.stat-card.hover-lift::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 5px;
+    background: currentColor;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.stat-card.hover-lift:hover::after {
+    opacity: 1;
+}
+
+/* Custom colors for each card */
+.stat-card.primary { --card-color: var(--primary-color); }
+.stat-card.success { --card-color: var(--success-color); }
+.stat-card.warning { --card-color: var(--warning-color); }
+.stat-card.info { --card-color: var(--info-color); }
+.stat-card.default { --card-color: var(--dark-color); }
+
+/* Make page title more prominent */
+.page-title {
+    font-size: 2.2rem;
+    font-weight: 800;
+    margin: 1rem 0;
+    color: var(--primary-color);
+}
+
+/* Better header layout */
+.header {
+    padding: 0 2rem;
+    height: 80px;
+}
+
+/* Better spacing for header elements */
+.header-left {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.product-info {
+    display: flex;
+    align-items: center;
+}
+
+.product-info img {
+    max-height: 40px;
+    border-radius: 4px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .stats-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+        margin: 1rem 0;
+    }
+    
+    .stat-card {
+        height: 180px;  /* Can be shorter on mobile */
+        padding: 1.5rem 1rem;
+    }
+    
+    .stat-card .stat-icon {
+        width: 55px;
+        height: 55px;
+        min-height: 55px;
+        margin-bottom: 1rem;
+    }
+    
+    .stat-info h1 {
+        font-size: 1.1rem;
+    }
+    
+    .page-title {
+        font-size: 1.8rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .stat-card {
+        height: 160px;
+        padding: 1rem;
+    }
+    
+    .stat-card .stat-icon {
+        width: 50px;
+        height: 50px;
+        min-height: 50px;
+    }
+    
+    .stat-card .stat-icon i {
+        font-size: 1.5rem;
+    }
+    
+    .stat-info h1 {
+        font-size: 1rem;
+    }
+}

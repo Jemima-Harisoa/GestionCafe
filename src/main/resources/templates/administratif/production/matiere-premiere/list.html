@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Matières Premières - Caf-E</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/templates/styles.css}">
+</head>
+<body>
+<div th:replace="~{administratif/production/layout/sidebar :: sidebar}"></div>
+<div class="main-content" id="mainContent">
+    <div th:replace="~{administratif/production/layout/header :: header('Matières Premières')}"></div>
+    <main class="content">
+        <!-- Modern Header -->
+        <div class="page-header modern-header">
+            <div class="header-content">
+                <div class="header-title-section">
+                    <div class="header-icon">
+                        <i class="fas fa-boxes"></i>
+                    </div>
+                    <div>
+                        <h2>Gestion Matières Premières</h2>
+                        <p class="header-subtitle">Catalogue complet des ingrédients et matières premières</p>
+                    </div>
+                </div>
+                <div class="header-actions">
+                    <div class="search-filters">
+                        <div class="search-input">
+                            <i class="fas fa-search"></i>
+                            <input type="text" id="searchNom" placeholder="Rechercher une matière première...">
+                        </div>
+                        <select class="form-select" id="searchUnite">
+                            <option value="">Toutes les unités</option>
+                            <option>kg</option>
+                            <option>L</option>
+                            <option>sachet</option>
+                            <option>boîte</option>
+                        </select>
+                    </div>
+                    <a th:href="@{/administratif/production/matiere-premiere/ajouter}" class="btn primary">
+                        <i class="fas fa-plus"></i>
+                        Ajouter 
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Stats -->
+        <div class="stats-grid" style="margin-bottom: 2rem;">
+            <div class="stat-card primary hover-lift">
+                <div class="stat-icon">
+                    <i class="fas fa-cubes"></i>
+                </div>
+                <div class="stat-info">
+                    <h3>Total Matières</h3>
+                    <p class="stat-value" th:text="${#lists.size(matieres)}">0</p>
+                </div>
+            </div>
+
+            <div class="stat-card success hover-lift">
+                <div class="stat-icon">
+                    <i class="fas fa-check-circle"></i>
+                </div>
+                <div class="stat-info">
+                    <h3>En Stock</h3>
+                    <p class="stat-value">85%</p>
+                </div>
+            </div>
+
+            <div class="stat-card warning hover-lift">
+                <div class="stat-icon">
+                    <i class="fas fa-exclamation-triangle"></i>
+                </div>
+                <div class="stat-info">
+                    <h3>Stock Faible</h3>
+                    <p class="stat-value">3</p>
+                </div>
+            </div>
+
+            <div class="stat-card info hover-lift">
+                <div class="stat-icon">
+                    <i class="fas fa-truck"></i>
+                </div>
+                <div class="stat-info">
+                    <h3>Fournisseurs</h3>
+                    <p class="stat-value">12</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Materials Table -->
+        <div class="table-container" th:if="${not #lists.isEmpty(matieres)}">
+            <div style="padding: 1.5rem 2rem; border-bottom: 1px solid rgba(139, 69, 19, 0.1); background: rgba(139, 69, 19, 0.05);">
+                <h3 style="margin: 0; display: flex; align-items: center; gap: 0.75rem;">
+                    <i class="fas fa-boxes"></i>
+                    Matières Premières
+                    <span style="font-size: 0.8rem; background: var(--primary-color); color: white; padding: 0.25rem 0.75rem; border-radius: 12px;"
+                          th:text="${#lists.size(matieres)} + ' matières'">0 matières</span>
+                </h3>
+            </div>
+            <table class="data-table">
+                <thead>
+                <tr>
+                    <th><i class="fas fa-leaf"></i> Nom</th>
+                    <th><i class="fas fa-ruler"></i> Unité</th>
+                    <th><i class="fas fa-layer-group"></i> Catégorie</th>
+                    <th><i class="fas fa-boxes"></i> Stock</th>
+                    <th><i class="fas fa-chart-bar"></i> Statut</th>
+                    <th><i class="fas fa-cogs"></i> Actions</th>
+                </tr>
+                </thead>
+                <tbody id="matiereTableBody">
+                <tr th:each="mp : ${matieres}">
+                    <td>
+                        <div style="display: flex; align-items: center; gap: 0.75rem;">
+                            <div th:if="${mp.image}" style="width: 40px; height: 40px; border-radius: 50%; overflow: hidden;">
+                            </div>
+                            <div th:unless="${mp.image}"
+                                style="width: 40px; height: 40px; border-radius: 50%; background: var(--gradient-primary); display: flex; align-items: center; justify-content: center; color: white; font-weight: bold;">
+                                <span th:text="${#strings.substring(mp.nom, 0, 1)}">M</span>
+                            </div>
+                            <span th:text="${mp.nom}">Nom matière première</span>
+                        </div>
+                    </td>
+                    <td>
+                        <span style="background: var(--info-light); color: var(--info-color); padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.85rem;"
+                              th:text="${mp.unite != null ? mp.unite.nom : 'Non définie'}">Unité</span>
+                    </td>
+                    <td>
+                        <span style="background: var(--info-light); color: var(--info-color); padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.85rem;"
+                              th:text="${mp.categorieUnite != null ? mp.categorieUnite.nom : 'Non définie'}">Catégorie</span>
+                    </td>
+                    <td>
+                        <div style="display: flex; align-items: center; gap: 0.5rem;">
+                            <strong style="color: var(--success-color);" th:text="${mp.stock != null ? mp.stock : '0'}">0</strong>
+                            <span style="font-size: 0.8rem; color: var(--gray-500);" th:text="${mp.unite != null ? mp.unite.nom : ''}">unité</span>
+                        </div>
+                    </td>
+                    <td>
+                        <span class="status-badge success">
+                            <i class="fas fa-check-circle"></i>
+                            En stock
+                        </span>
+                    </td>
+                    <td>
+                        <div style="display: flex; gap: 0.5rem;">
+                            <a th:href="@{'/administratif/production/matiere-premiere/details/' + ${mp.id}}" 
+                               class="btn outline small" title="Voir les détails">
+                                <i class="fas fa-eye"></i>
+                            </a>
+                            <a th:href="@{'/administratif/production/matiere-premiere/modifier/' + ${mp.id}}" 
+                               class="btn warning small" title="Modifier">
+                                <i class="fas fa-edit"></i>
+                            </a>
+                            <a th:href="@{'/administratif/production/matiere-premiere/supprimer/' + ${mp.id}}" 
+                               class="btn danger small" title="Supprimer"
+                               onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette matière première ?')">
+                                <i class="fas fa-trash"></i>
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Empty State -->
+        <div th:if="${#lists.isEmpty(matieres)}" class="chart-card hover-glow" style="text-align: center; padding: 4rem 2rem;">
+            <div style="color: var(--gray-400); margin-bottom: 2rem;">
+                <i class="fas fa-boxes" style="font-size: 4rem;"></i>
+            </div>
+            <h3 style="color: var(--gray-600); margin-bottom: 1rem;">Aucune matière première</h3>
+            <p style="color: var(--gray-500); margin-bottom: 2rem;">Commencez par ajouter vos premières matières premières pour gérer votre stock.</p>
+            <a th:href="@{/administratif/production/matiere-premiere/ajouter}" class="btn primary">
+                <i class="fas fa-plus"></i>
+                Ajouter la première matière première
+            </a>
+        </div>
+    </main>
+</div>
+<script th:src="@{/templates/script.js}"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const searchNom = document.getElementById('searchNom');
+    const searchUnite = document.getElementById('searchUnite');
+    const tableBody = document.getElementById('matiereTableBody');
+
+    function normalize(str) {
+        return (str || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+    }
+
+    function filterTable() {
+        const nomVal = normalize(searchNom.value);
+        const uniteVal = normalize(searchUnite.value);
+
+        Array.from(tableBody.querySelectorAll('tr')).forEach(tr => {
+            // Récupère le nom (dernier span dans le td)
+            const nomSpan = tr.querySelector('td:nth-child(1) span:last-child');
+            const nom = nomSpan ? normalize(nomSpan.textContent) : '';
+            // Récupère l'unité (span dans le 2e td)
+            const uniteSpan = tr.querySelector('td:nth-child(2) span');
+            const unite = uniteSpan ? normalize(uniteSpan.textContent) : '';
+
+            const matchNom = nom.includes(nomVal);
+            const matchUnite = !uniteVal || unite === uniteVal;
+
+            tr.style.display = (matchNom && matchUnite) ? '' : 'none';
+        });
+    }
+
+    if (searchNom && searchUnite && tableBody) {
+        searchNom.addEventListener('input', filterTable);
+        searchUnite.addEventListener('change', filterTable);
+    }
+});
+</script>
+</body>
+</html>

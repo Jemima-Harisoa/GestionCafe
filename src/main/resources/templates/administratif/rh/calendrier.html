@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CafeManager Pro - Gestion de Café</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Utilisation de Thymeleaf pour la gestion des ressources CSS -->
+    <link rel="stylesheet" th:href="@{/css/rh/calendrier.css}">
+    <link rel="stylesheet" th:href="@{/templates/styles.css}">
+</head>
+<body>
+    <div th:replace="~{administratif/rh/layout/sidebar :: sidebar}"></div>
+    <div class="main-content" id="mainContent">
+        <div th:replace="~{administratif/rh/layout/header :: header('Calendrier RH')}"></div>
+        <main class="content">
+            <h1>Calendrier : 2025</h1>
+            <div class="calendar-container" id="calendar"></div>
+        </main>
+    </div>
+    <script th:inline="javascript">
+        let jours = /*[[${jours}]]*/ [];
+    </script>
+    <script th:src="@{/js/rh/calendrier.js}"></script> 
+
+</body>
+<script th:src="@{/templates/script.js}"></script>
+</html>

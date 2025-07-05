@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CafeManager Pro - Gestion de Café</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/templates/styles.css}">
+</head>
+<body>
+    <div th:replace="~{administratif/marketing/layout/sidebar :: sidebar}"></div>
+    
+    <div class="main-content" id="mainContent">
+        <div th:replace="~{administratif/marketing/layout/header :: header('Marketing')}"></div>
+        <main class="content">
+            <h1></h1>
+        </main>
+    </div>
+    <script th:src="@{/templates/script.js}"></script>
+</body>
+</html>

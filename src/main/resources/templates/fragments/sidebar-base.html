@@ -1,0 +1,19 @@
+<div th:fragment="sidebarBase(header, content)">
+    <!-- Bouton flottant pour réafficher le sidebar -->
+    <button class="sidebar-toggle-float" id="sidebarShowBtn" style="display:none; position:fixed; top:20px; left:20px; z-index:2000; background:#fff; border:none; border-radius:50%; box-shadow:0 2px 8px rgba(0,0,0,0.15); width:40px; height:40px; align-items:center; justify-content:center;">
+        <i class="fas fa-bars"></i>
+    </button>
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <span th:replace="${header}"></span>
+            <button class="sidebar-toggle" id="sidebarToggle">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+        <nav class="sidebar-nav">
+            <ul>
+                <span th:replace="${content}"></span>
+            </ul>
+        </nav>
+    </div>
+</div>

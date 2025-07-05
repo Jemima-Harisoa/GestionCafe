@@ -1,0 +1,5 @@
+Maintenant modifier moi le nécessaire pour ajouter une courbe qui va montrer le nombre total de produit vendu sur une période (jour, mois ou année) Modifie aussi les fonctions dans les services parce que pour les périodes :
+
+si c'est journalier ce sera la courbe des 60 dernier jours
+si c'est mois utilise les douzes dernières mois
+si c'est année utilise les 3 dernières années

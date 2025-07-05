@@ -1,0 +1,88 @@
+# Fonctionnalités du projet GestionCafe
+
+## Module Authentification
+- Connexion pour les utilisateurs administratifs
+- Connexion pour les utilisateurs quotidiens
+
+## Module Administratif
+- Accueil administratif
+- Accès aux modules de gestion de la production, RH, stock
+
+## Module Quotidien
+- Accueil quotidien
+
+
+## Module Production
+- Statistiques de production (ventes par période, par produit)
+- Gestion des matières premières :
+    - Ajouter une nouvelle matière première
+    - Modifier les informations d'une matière première
+    - Supprimer une matière première
+    - Estimer les besoins et consommations
+    - Définir et gérer les seuils d'alerte
+- Gestion des fournisseurs de matières premières :
+    - Ajouter un fournisseur
+    - Modifier les informations d'un fournisseur
+    - Supprimer un fournisseur
+    - Lier un fournisseur à une matière première
+- Gestion des produits :
+    - Créer un nouveau produit
+    - Modifier les informations d'un produit
+    - Supprimer un produit
+    - Lister les produits disponibles
+- Gestion des recettes :
+    - Définir les ingrédients d'un produit
+    - Définir les quantités et unités pour chaque ingrédient
+    - Modifier ou supprimer des ingrédients d'une recette
+- Gestion des machines :
+    - Ajouter une machine
+    - Modifier les informations d'une machine
+    - Supprimer une machine
+    - Affecter une machine à un produit ou une tâche
+    - Suivre l'utilisation des machines
+- Gestion des ventes :
+    - Enregistrer une nouvelle vente
+    - Consulter l'historique des ventes
+    - Détail des ventes par produit et par période
+- Gestion des prix de vente des produits :
+    - Définir le prix de vente d'un produit
+    - Modifier le prix de vente
+    - Historiser les changements de prix
+- Gestion des packages de produits :
+    - Créer un package de produits
+    - Modifier ou supprimer un package
+    - Lister les packages disponibles
+
+## Module RH
+- Accès à l'interface RH (gestion des employés, à compléter selon code)
+
+## Module Stock
+- Accès à l'interface Stock (gestion du stock, à compléter selon code)
+
+## Module Tiers
+- Gestion des clients :
+    - Ajouter un client
+    - Modifier les informations d'un client
+    - Supprimer un client
+    - Lister les clients
+- Gestion des fournisseurs :
+    - Ajouter un fournisseur
+    - Modifier les informations d'un fournisseur
+    - Supprimer un fournisseur
+    - Lister les fournisseurs
+- Gestion des employés :
+    - Ajouter un employé
+    - Modifier les informations d'un employé
+    - Supprimer un employé
+    - Lister les employés
+- Gestion des tiers (généralisation) :
+    - Gérer les entités externes (clients, fournisseurs, employés) de façon centralisée
+
+---
+
+**Remarque :**
+- Les modules RH et Stock sont présents mais leurs fonctionnalités détaillées ne sont pas entièrement visibles dans le code scanné.
+- Les modules Production et Tiers sont les plus complets (gestion CRUD, statistiques, relations entre entités).
+- L'application utilise Spring Boot, Spring Data JPA, Thymeleaf, PostgreSQL, Tomcat, Bootstrap5.
+
+Ce fichier a été généré automatiquement par scan du code source.

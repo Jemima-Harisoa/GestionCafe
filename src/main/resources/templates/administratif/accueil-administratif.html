@@ -1,0 +1,109 @@
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CafeManager Pro - Gestion de Café</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
+          rel="stylesheet">    <!-- Utilisation de Thymeleaf pour la gestion des ressources -->
+    <link rel="stylesheet" th:href="@{/templates/styles.css}">
+    <link rel="stylesheet" th:href="@{/templates/mystyles.css}">
+</head>
+<body>
+<!-- Header -->
+<header class="header">
+    <div class="header-left">
+        <button class="mobile-toggle">
+            <i class="fas fa-bars"></i>
+        </button>
+        <div class="product-info">
+            <!-- Lien vers la page administratif -->
+            <a th:href="@{/administratif}" data-page="dashboard" class="nav-link">
+                <i class="fas fa-chart-line"></i>
+                <!-- Image de logo -->
+                <img th:src="@{/images/logo/logo.jpg}" alt="Café">
+            </a>
+        </div>
+        <h1 class="page-title" id="pageTitle">Modules</h1>
+    </div>
+    <div class="header-right">
+        <button class="mobile-toggle">
+            <i class="fas fa-bars"></i>
+        </button>
+        <div class="product-info">
+            <!-- Lien vers la déconnexion administratif -->
+            <a th:href="@{/deconnexion-administratif}" data-page="dashboard" class="nav-link">
+                <i class="fas fa-chart-line"></i>
+                <span class="nav-text">Déconnexion</span>
+            </a>
+        </div>
+    </div>
+</header>
+
+<main class="content">
+    <div class="stats-grid">
+        <div class="stat-card primary hover-lift">
+            <div class="stat-icon">
+                <i class="fas fa-euro-sign"></i>
+            </div>
+            <div class="stat-info">
+                <a th:href="@{/administratif/stock}" data-page="dashboard">
+                    <h1>STOCK</h1>
+                    <i class="fas fa-chart-line"></i>
+                </a>
+            </div>
+        </div>
+
+        <div class="stat-card success hover-lift">
+            <div class="stat-icon">
+                <i class="fas fa-coffee"></i>
+            </div>
+            <div class="stat-info">
+                <a th:href="@{/administratif}" data-page="dashboard">
+                    <h1>FINANCE</h1>
+                    <i class="fas fa-chart-line"></i>
+                </a>
+            </div>
+        </div>
+        <div class="stat-card warning hover-lift">
+            <div class="stat-icon">
+                <i class="fas fa-users"></i>
+            </div>
+            <div class="stat-info">
+                <a th:href="@{/administratif/rh}" data-page="dashboard">
+                    <h1>RESSOURCES<br>HUMAINES</h1>
+                    <i class="fas fa-chart-line"></i>
+                </a>
+            </div>
+        </div>
+
+        <div class="stat-card info hover-lift">
+            <div class="stat-icon">
+                <i class="fas fa-boxes"></i>
+            </div>
+            <div class="stat-info">
+                <a th:href="@{/administratif/production}" data-page="dashboard">
+                    <h1>PRODUCTION</h1>
+                    <i class="fas fa-chart-line"></i>
+                </a>
+            </div>
+        </div>
+
+        <div class="stat-card default hover-lift">
+            <div class="stat-icon">
+                <i class="fas fa-users"></i>
+            </div>
+            <div class="stat-info">
+                <a th:href="@{/administratif/marketing}" data-page="dashboard">
+                    <h1>MARKETING</h1>
+                    <i class="fas fa-chart-line"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</main>
+
+<!-- Utilisation de Thymeleaf pour la gestion du script JS -->
+<!-- <script th:src="@{/templates/script.js}"></script> -->
+</body>
+</html>

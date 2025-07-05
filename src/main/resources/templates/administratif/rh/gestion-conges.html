@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CafeManager Pro - Gestion de Café</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
+          rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/templates/styles.css}">
+    <script th:src="@{/js/rh/annee.js}"></script>
+</head>
+<body>
+<div th:replace="~{administratif/rh/layout/sidebar :: sidebar}"></div>
+
+<div class="main-content" id="mainContent">
+    <div th:replace="~{administratif/rh/layout/header :: header('Gestion des congés')}"></div>
+    <main class="content">
+        <div>
+            <h1 id="annee"></h1>
+        </div>
+
+        <div>
+            <a th:href="@{/administratif/rh/conge/calendrier}" class="btn primary">
+                Voir le calendrier du cafeteria
+            </a><br><br>
+        </div>
+
+        <div class="production-dashboard">
+            <div class="production-main-card">
+                <div class="card-header">
+                    <h3>Details sur les conges des employes actifs</h3>
+                </div>
+                <div class="production-chart-container">
+                    <div class="production-items-grid">
+
+                        <div th:if="${employes != null and !#lists.isEmpty(employes)}">
+                            <div th:each="employe : ${employes}" class="production-item-card">
+                                <div class="item-details">
+                                    <h4>Employé : <span th:text="${employe.nom != null ? employe.nom : '-'}">-</span>
+                                    </h4>
+                                    <div class="item-stats">
+                                            <span class="quantity">
+                                                Date Recrutement :
+                                                <span th:text="${employe.dateRecrutement != null ? #dates.format(employe.dateRecrutement, 'dd/MM/yyyy') : '-'}">-</span>
+                                            </span><br>
+                                        <span class="quantity">
+                                                Genre :
+                                                <span th:text="${employe.genre != null ? employe.genre.valeur : '-'}">-</span>
+                                            </span><br>
+                                        <span class="quantity">
+                                                Nombre de jours de conges utilises :
+                                                <span th:text="${nbjCongeUtilise.get(employe.id)}">-</span>
+                                            </span><br>
+                                        <span class="quantity">
+                                                Nombre de jours de conges reserves :
+                                                <span th:text="${nbjCongeReserve.get(employe.id)}">-</span>
+                                            </span><br>
+                                        <span class="quantity">
+                                                Nombre de jours de conges non utilises :
+                                                <span th:text="${nbjCongeNonUtilise.get(employe.id)}">-</span>
+                                            </span><br>
+                                    </div>
+                                    <br>
+                                    <div class="form-showcase">
+                                        <h5>Formulaire pour reserver un conge</h5>
+                                        <form th:action="@{/administratif/rh/conge/ajout-conge}" method="post"
+                                              class="form-example">
+                                            <div class="form-group">
+                                                <label class="form-label">Type de conge:</label>
+                                                <select class="form-select" name="typeConge">
+                                                    <option value="">Choisir un type</option>
+                                                    <option th:each="typeConge : ${typeConges}"
+                                                            th:value="${typeConge.id}">
+                                                        <span th:text="${typeConge != null ? typeConge.nom : '-'}">-</span>
+                                                    </option>
+                                                </select>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="form-label">Date debut :</label>
+                                                <input type="date" class="form-input" name="dateDebut">
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="form-label">Date fin :</label>
+                                                <input type="date" class="form-input" name="dateFin">
+                                            </div>
+                                            <input type="hidden" name="idEmploye" th:value="${employe.id}">
+                                            <button type="submit" class="btn primary">Reserver le conge</button>
+                                            <br><br>
+                                        </form>
+                                    </div>
+                                    <div>
+                                        <h1 th:text="${erreurAjoutConge != null ? erreurAjoutConge : ''}"></h1>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div th:if="${employes == null or #lists.isEmpty(employes)}">
+                            <h4>Aucun employé</h4>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+<script th:src="@{/templates/script.js}"></script>
+</body>
+</html>
