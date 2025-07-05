@@ -3,8 +3,7 @@ fiche de presence generer auto par jour de travail et mis false par defaut
 recrute employe en un mois c aussi mettre sa fiche d epresence entre date recrutement et 
 1er du mois de cette date en false comme presence
 
-tu vois ao am branche rohy-marketing misy ao liste de candidats zay
-de misy bouton ao oe recrute
+bouton ao oe recrute
 
 en fait refa mi-cliquer an iny bouton iny de il faut faire une fonction transactionnal
 - inserer dans employe 
