@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -165,12 +166,29 @@ public class RhRecrutementController {
 
         return "administratif/rh/gestion-recrutements";
     }
-
+    
     @PostMapping("/recruter")
-    public String postRecruter(@RequestParam("candidatId") Long candidatId) {
-        employeService.recruterCandidat(candidatId);
+    public String postRecruter(@RequestParam("candidatId") Long candidatId, RedirectAttributes redirectAttributes) {
+        try {
+            // Récupération du candidat pour le message
+            Candidat candidat = candidatService.getCandidatById(candidatId);
+
+            // Stockage du nom et grade pour affichage
+            String nom = candidat.getNom();
+            String gradeNom = (candidat.getGrade() != null) ? candidat.getGrade().getNom() : "Inconnu";
+
+            employeService.recruterCandidat(candidatId);
+
+            String message = "Le candidat " + nom + " a été recruté avec succès au grade de " + gradeNom + ".";
+            redirectAttributes.addFlashAttribute("successMessage", message);
+
+        } catch (RuntimeException ex) {
+            redirectAttributes.addFlashAttribute("errorMessage", "Erreur lors du recrutement : " + ex.getMessage());
+        }
+
         return "redirect:/administratif/rh/gestion-recrutements";
     }
+
     
     @PostMapping("/pdf")
     public void exportPdf(@RequestParam("candidatId") Long candidatId, HttpServletResponse response) throws Exception {

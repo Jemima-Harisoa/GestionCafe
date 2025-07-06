@@ -10,8 +10,8 @@
     <link rel="stylesheet" th:href="@{/css/rh/styles.css}">
     <link rel="stylesheet" th:href="@{/css/rh/recrutement.css}">
     <style>
-  /* Styles pour le modal de confirmation */
-        .modal-overlay {
+/* Styles pour le modal de confirmation */
+       .modal-overlay {
             display: none;
             position: fixed;
             top: 0;
@@ -70,33 +70,32 @@
         
         <main class="content">
             <h2>Filtrer par détail</h2>
-            
-            <form class="form-recrutement" method="post" th:action="@{/administratif/rh/recrutement/recrutement}" style="margin-bottom: 1em;">
+
+            <form class="form-recrutement" method="post" th:action="@{/administratif/rh/recrutement/recrutement}">
+
                 <!-- Genre -->
-                <div style="margin-bottom: 1em;">
+                <div>
                     <label><strong>Genre :</strong></label>
-                    <label style="margin-left: 1em;">
-                        <input type="radio" name="genreId" value="1" th:checked="${param.genreId == '1'}" /> Homme
-                    </label>
-                    <label style="margin-left: 1em;">
-                        <input type="radio" name="genreId" value="2" th:checked="${param.genreId == '2'}" /> Femme
-                    </label>
+                    <div class="field-inline">
+                        <label><input type="radio" name="genreId" value="1" th:checked="${param.genreId == '1'}" /> Homme</label>
+                        <label><input type="radio" name="genreId" value="2" th:checked="${param.genreId == '2'}" /> Femme</label>
+                    </div>
                 </div>
 
                 <!-- Âge -->
-                <div style="margin-bottom: 1em;">
+                <div>
                     <label><strong>Âge entre :</strong></label>
-                    <input type="number" name="minAge" min="0" placeholder="Min" 
-                        th:value="${param.minAge}" style="width: 60px; margin-left: 1em;" />
-                    -
-                    <input type="number" name="maxAge" min="0" placeholder="Max" 
-                        th:value="${param.maxAge}" style="width: 60px; margin-left: 0.5em;" />
+                    <div class="field-inline">
+                        <input type="number" name="minAge" min="0" placeholder="Min" th:value="${param.minAge}" />
+                        <span>-</span>
+                        <input type="number" name="maxAge" min="0" placeholder="Max" th:value="${param.maxAge}" />
+                    </div>
                 </div>
 
                 <!-- Grade -->
-                <div style="margin-bottom: 1em;">
+                <div>
                     <label><strong>Poste :</strong></label>
-                    <select name="gradeId" style="margin-left: 1em;">
+                    <select name="gradeId">
                         <option value="" th:selected="${param.gradeId == null or param.gradeId == ''}">Tous</option>
                         <option th:each="g : ${grades}" th:value="${g.id}" 
                                 th:text="${g.nom}" 
@@ -105,50 +104,59 @@
                 </div>
 
                 <!-- Série Bac -->
-                <div style="margin-bottom: 1em;">
+                <div>
                     <label><strong>Bac :</strong></label>
-                    <label th:each="s : ${seriesBac}" style="margin-right: 1em;">
-                        <input type="checkbox" name="serieBacIds" th:value="${s.id}"
-                            th:checked="${param.serieBacIds != null} ? ${#lists.contains(param.serieBacIds, s.id.toString())} : false" />
-                        <span th:text="${s.valeur}"></span>
-                    </label>
+                    <div class="field-group">
+                        <label th:each="s : ${seriesBac}">
+                            <input type="checkbox" name="serieBacIds" th:value="${s.id}"
+                                th:checked="${param.serieBacIds != null} ? ${#lists.contains(param.serieBacIds, s.id.toString())} : false" />
+                            <span th:text="${s.valeur}"></span>
+                        </label>
+                    </div>
                 </div>
 
                 <!-- Formations -->
-                <div style="margin-bottom: 1em;">
+                <div>
                     <label><strong>Formations :</strong></label>
-                    <label th:each="f : ${formations}" style="margin-right: 1em;">
-                        <input type="checkbox" name="formationIds" th:value="${f.id}"
-                            th:checked="${param.formationIds != null} ? ${#lists.contains(param.formationIds, f.id.toString())} : false" />
-                        <span th:text="${f.valeur}"></span>
-                    </label>
+                    <div class="field-group">
+                        <label th:each="f : ${formations}">
+                            <input type="checkbox" name="formationIds" th:value="${f.id}"
+                                th:checked="${param.formationIds != null} ? ${#lists.contains(param.formationIds, f.id.toString())} : false" />
+                            <span th:text="${f.valeur}"></span>
+                        </label>
+                    </div>
                 </div>
 
                 <!-- Langues -->
-                <div style="margin-bottom: 1em;">
+                <div>
                     <label><strong>Langues :</strong></label>
-                    <label th:each="l : ${langues}" style="margin-right: 1em;">
-                        <input type="checkbox" name="langueIds" th:value="${l.id}"
-                            th:checked="${param.langueIds != null} ? ${#lists.contains(param.langueIds, l.id.toString())} : false" />
-                        <span th:text="${l.valeur}"></span>
-                    </label>
+                    <div class="field-group">
+                        <label th:each="l : ${langues}">
+                            <input type="checkbox" name="langueIds" th:value="${l.id}"
+                                th:checked="${param.langueIds != null} ? ${#lists.contains(param.langueIds, l.id.toString())} : false" />
+                            <span th:text="${l.valeur}"></span>
+                        </label>
+                    </div>
                 </div>
 
-                <!-- Expériences -->
-                <div style="margin-bottom: 1em;">
+                <!-- Expérience -->
+                <div>
                     <label><strong>Expérience :</strong></label>
-                    <label th:each="e : ${experiences}" style="margin-right: 1em;">
-                        <input type="radio" name="experienceId" th:value="${e.id}"
-                            th:checked="${param.experienceId == e.id.toString()}" />
-                        <span th:text="${e.valeur}"></span>
-                    </label>
+                    <div class="field-group">
+                        <label th:each="e : ${experiences}">
+                            <input type="radio" name="experienceId" th:value="${e.id}"
+                                th:checked="${param.experienceId == e.id.toString()}" />
+                            <span th:text="${e.valeur}"></span>
+                        </label>
+                    </div>
                 </div>
 
                 <!-- Bouton -->
-                <div>
+                <div class="submit-btn">
                     <button type="submit">Filtrer</button>
                 </div>
             </form>
+
 
             <h1>Recrutement</h1>
             <div class="cv-container">
@@ -229,6 +237,17 @@
                 </div>
             </div>
         </div>
+
+        <!-- Modal de confirmation de succès -->
+        <div id="successModal" class="modal-overlay" th:if="${successMessage}">
+            <div class="modal-content">
+                <h3 th:text="${successMessage}">Message de succès</h3>
+                <div class="modal-buttons">
+                    <button class="modal-btn btn-confirm" onclick="closeSuccessModal()">Fermer</button>
+                </div>
+            </div>
+        </div>
+
     </div>
 
     <script>
@@ -260,6 +279,17 @@
             activeForm = null;
         }
 
+        function closeSuccessModal() {
+            document.getElementById('successModal').style.display = 'none';
+        }
+
+        // Affiche automatiquement le modal si le message est présent
+        window.addEventListener('DOMContentLoaded', () => {
+            const successModal = document.getElementById('successModal');
+            if (successModal) {
+                successModal.style.display = 'flex';
+            }
+        });
         document.getElementById('confirmationModal').addEventListener('click', function(e) {
             if (e.target === this) {
                 closeModal();

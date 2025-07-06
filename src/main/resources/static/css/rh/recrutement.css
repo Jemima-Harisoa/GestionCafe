@@ -1,15 +1,4 @@
 /* Filter Form Styles */
-/* Style pour le formulaire de recrutement */
-.form-recrutement {
-    background-color: #f9f9f9;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    font-family: 'Poppins', sans-serif;
-    margin: 5px auto 2em auto;
-    width: 88%;
-}
-
 /* Style pour le formulaire de confirmation de recrutement */
 .form-recruter {
     background-color: #ffffff;
@@ -22,6 +11,60 @@
     width: 100%;
 }
 
+.form-recrutement {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5em;
+    background: #f9f9f9;
+    padding: 1.5em;
+    border-radius: 8px;
+    font-family: 'Poppins', sans-serif;
+}
+
+.form-recrutement label {
+    display: block;
+    margin-bottom: 0.4em;
+    font-weight: 500;
+    color: #333;
+}
+
+.form-recrutement input[type="number"],
+.form-recrutement select {
+    width: 100%;
+    padding: 0.4em;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.form-recrutement .field-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1em;
+}
+
+.form-recrutement .field-inline {
+    display: flex;
+    align-items: center;
+    gap: 1em;
+}
+
+.form-recrutement .submit-btn {
+    grid-column: 1 / -1;
+    text-align: right;
+}
+
+.form-recrutement button {
+    padding: 0.6em 1.2em;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.form-recrutement button:hover {
+    background-color: #0056b3;
+}
 
 form h2 {
     margin-bottom: 15px;
@@ -194,7 +237,6 @@ form button[type="submit"]:hover {
 .btn-recruter:hover {
     background-color: #218838;
 }
-
 /* Responsive Design */
 @media (max-width: 1200px) {
     .cv-container {

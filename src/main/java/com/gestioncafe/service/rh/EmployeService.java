@@ -17,6 +17,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import org.springframework.transaction.annotation.Transactional;
 import com.gestioncafe.model.*;
 import com.gestioncafe.repository.*;
 
@@ -42,7 +43,7 @@ public class EmployeService {
     private GradeEmployeService gradeEmployeService;
 
 
-
+    @Transactional
     public void recruterCandidat(Long candidatId) {
         Candidat candidat = candidatRepository.findById(candidatId)
             .orElseThrow(() -> new RuntimeException("Candidat non trouvé"));
@@ -72,7 +73,6 @@ public class EmployeService {
 
         // Récupérer idGrade du candidat directement
         Long idGrade = null;
-
         if (candidat.getGrade() != null) {
             idGrade = candidat.getGrade().getId();
         }
