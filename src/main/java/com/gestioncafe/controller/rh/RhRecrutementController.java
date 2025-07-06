@@ -166,13 +166,30 @@ public class RhRecrutementController {
 
         return "administratif/rh/gestion-recrutements";
     }
-
+ 
     @PostMapping("/recruter")
-    public String postRecruter(@RequestParam("candidatId") Long candidatId) {
-        employeService.recruterCandidat(candidatId);
+    public String postRecruter(@RequestParam("candidatId") Long candidatId, RedirectAttributes redirectAttributes) {
+        try {
+            // Récupération du candidat pour le message
+            Candidat candidat = candidatService.getCandidatById(candidatId);
+
+            // Stockage du nom et grade pour affichage
+            String nom = candidat.getNom();
+            String gradeNom = (candidat.getGrade() != null) ? candidat.getGrade().getNom() : "Inconnu";
+
+            employeService.recruterCandidat(candidatId);
+
+            String message = "Le candidat " + nom + " a été recruté avec succès au grade de " + gradeNom + ".";
+            redirectAttributes.addFlashAttribute("successMessage", message);
+
+        } catch (RuntimeException ex) {
+            redirectAttributes.addFlashAttribute("errorMessage", "Erreur lors du recrutement : " + ex.getMessage());
+        }
+
         return "redirect:/administratif/rh/gestion-recrutements";
     }
-    
+
+     
     @PostMapping("/pdf")
     public void downloadPdf(@RequestParam("candidatId") Long candidatId, HttpServletResponse response) throws IOException {
         if (candidatId == null) {
