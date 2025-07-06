@@ -42,7 +42,7 @@ public class EmployeService {
     private GradeEmployeService gradeEmployeService;
 
 
-
+    @Transactional
     public void recruterCandidat(Long candidatId) {
         Candidat candidat = candidatRepository.findById(candidatId)
             .orElseThrow(() -> new RuntimeException("Candidat non trouvé"));
@@ -72,7 +72,6 @@ public class EmployeService {
 
         // Récupérer idGrade du candidat directement
         Long idGrade = null;
-
         if (candidat.getGrade() != null) {
             idGrade = candidat.getGrade().getId();
         }
@@ -91,6 +90,7 @@ public class EmployeService {
             throw new RuntimeException("Grade du candidat non trouvé");
         }
     }
+
 
     public List<Employe> findAll() {
         return employeRepository.findAll();
